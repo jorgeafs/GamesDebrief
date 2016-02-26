@@ -3,4 +3,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="generarReporte">Crear informe de partida</string>
+    <string name="añadirJuego">Añada un juego nuevo</string>
+    <string name="estadisticas">Ver estadisticas</string>
 </resources>
