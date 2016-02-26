@@ -1,9 +1,11 @@
 package com.example.jorge.gamesdebrief;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements MenuPrincipal.OnFragmentInteractionListener {
     //Constants
     private static final String MENU_JUEGO = "menu_juego";
     private static final String MENU_PRINCIPAL = "menu_principal";
@@ -24,7 +26,7 @@ public class MainActivity extends Activity {
             menuPrincipal = new MenuPrincipal();
             getFragmentManager()
                     .beginTransaction()
-                    .add(R.id.menuPrincipal, menuPrincipal,MENU_PRINCIPAL)
+                    .add(R.id.singleContainer, menuPrincipal,null)
                     .commit();
         } else if (findViewById(R.id.singleContainer)!=null && savedInstanceState != null){
             //movil en posicion vertical con datos en el saveInstaceState, debemos ver que fragment lanzamos
@@ -33,5 +35,24 @@ public class MainActivity extends Activity {
         } else {
             //movil en posicion horizontal y con datos salvados
         }
+    }
+
+    private void tostar(String mensaje){
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void eligeJuego() {
+        tostar("esta opcion no esta disponible todavia");
+    }
+
+    @Override
+    public void añadeJuego() {
+        tostar("esta opcion no esta disponible todavia");
+    }
+
+    @Override
+    public void eligeEstadiscasJuego() {
+        tostar("esta opcion no esta disponible todavia");
     }
 }

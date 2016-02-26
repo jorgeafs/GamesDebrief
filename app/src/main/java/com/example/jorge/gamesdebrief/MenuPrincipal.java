@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,9 @@ public class MenuPrincipal extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Button generarReportePartida;
+    private Button añadirJuego;
+    private Button estadisticas;
 
     public MenuPrincipal() {
         // Required empty public constructor
@@ -63,15 +67,45 @@ public class MenuPrincipal extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu_principal, container, false);
+        View principalView = inflater.inflate(R.layout.fragment_menu_principal, container, false);
+        //vinculo los botones a las variables preparadas
+        generarReportePartida = (Button) principalView.findViewById(R.id.generarReporte);
+        añadirJuego = (Button) principalView.findViewById(R.id.añadirJuego);
+        estadisticas = (Button) principalView.findViewById(R.id.estadisticas);
+        //asigno listener a los botones
+        generarReportePartida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.eligeJuego();
+                }
+            }
+        });
+        añadirJuego.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.añadeJuego();
+                }
+            }
+        });
+        estadisticas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.eligeEstadiscasJuego();
+                }
+            }
+        });
+        return principalView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -83,6 +117,7 @@ public class MenuPrincipal extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {
@@ -101,7 +136,8 @@ public class MenuPrincipal extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        public void eligeJuego();
+        public void añadeJuego();
+        public void eligeEstadiscasJuego();
     }
 }
