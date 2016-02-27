@@ -31,8 +31,6 @@ public class MenuJuego extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     //Constantes
-    private static final String UN_JUGADOR = "Un jugador";
-    private static final String MULTIJUGADOR = "Multijugador";
     private static final String SELECCIONE_MODO = "Seleccione un modo";
     private static final String SELECCIONE_JUEGO = "Seleccione un juego";
 
@@ -99,7 +97,7 @@ public class MenuJuego extends Fragment {
 
     private void preparaModos(View menuJuegos, LayoutInflater inflater) {
         modos = (Spinner) menuJuegos.findViewById(R.id.spinnerModos);
-        List<DatosSpiner> empty = new ArrayList<>(0);
+        List<DatosSpiner> empty = new ArrayList<>();
         empty.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
         modosAdapter = new MultiAdaptador(empty, inflater, actualContext);
         modos.setAdapter(modosAdapter);
@@ -154,9 +152,8 @@ public class MenuJuego extends Fragment {
 
     private void preparaSwitch(View menuJuegos) {
         esUnSoloJugador = (Switch) menuJuegos.findViewById(R.id.switchJugador);
-        esUnSoloJugador.setTextOff(MULTIJUGADOR);
-        esUnSoloJugador.setTextOn(UN_JUGADOR);
         esUnSoloJugador.setChecked(true);
+        esSinglePlayer = true;
         esUnSoloJugador.setEnabled(false);
         esUnSoloJugador.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -171,7 +168,7 @@ public class MenuJuego extends Fragment {
         rellenarPartida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.lanzaInforme(((DatosSpiner) juegos.getSelectedItem()).getId(), ((DatosSpiner) modos.getSelectedItem()).getId());
+                mListener.lanzaInforme(((DatosSpiner) juegos.getSelectedItem()).getId(), ((DatosSpiner) modos.getSelectedItem()).getId(), esSinglePlayer);
             }
         });
         rellenarPartida.setEnabled(false);
@@ -226,6 +223,6 @@ public class MenuJuego extends Fragment {
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getJuegos();
         public List<DatosSpiner> getModos(int juegoId);
-        public void lanzaInforme(int juegoId, int modoId);
+        public void lanzaInforme(int juegoId, int modoId, boolean isSinglePlayer);
     }
 }

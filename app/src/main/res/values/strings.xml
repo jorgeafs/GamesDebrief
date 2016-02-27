@@ -10,4 +10,11 @@
     <string name="labelSwitchJugador">Seleccion el tipo de partida</string>
     <string name="labelModos">Seleccione un modo de juegos</string>
     <string name="rellenaPartida">Completa el informe</string>
+    <string name="esUnSoloJugador">Un jugador</string>
+    <string name="jugadoresTotal">Jugadores Totales</string>
+    <string name="jugadoresAliados">Jugadores en tu bando</string>
+    <string name="jugadoresEnemigos">Jugadores en el bando enemigo</string>
+    <string name="descripcion">Introduce aqui los acontecimientos de la partida</string>
+    <string name="partidaGanada">Partida ganada</string>
+    <string name="salvarInforme">Salvar el informe</string>
 </resources>
