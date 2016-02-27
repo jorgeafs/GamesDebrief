@@ -1,19 +1,12 @@
 package com.example.jorge.gamesdebrief;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Spinner;
-import android.widget.Switch;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,25 +23,11 @@ public class MenuJuego extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    //Constantes
-    private static final String UN_JUGADOR = "Un jugador";
-    private static final String MULTIJUGADOR = "Multijugador";
-    private static final String SELECCIONE_MODO = "Seleccione un modo";
-    private static final String SELECCIONE_JUEGO = "Seleccione un juego";
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private Spinner juegos;
-    private Switch esUnSoloJugador;
-    private Spinner modos;
-    private Button rellenarPartida;
-    private Boolean esSinglePlayer;
-    private Context actualContext;
-    private MultiAdaptador modosAdapter;
-    private MultiAdaptador juegosAdapter;
 
     public MenuJuego() {
         // Required empty public constructor
@@ -85,107 +64,7 @@ public class MenuJuego extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View menuJuegos = inflater.inflate(R.layout.fragment_menu_juego, container, false);
-
-        //preparamos los widgets
-        preparaBoton(menuJuegos);
-        preparaSwitch(menuJuegos);
-        preparaModos(menuJuegos, inflater);
-        preparaJuegos(menuJuegos, inflater);
-
-        //devuelve la vista
-        return menuJuegos;
-    }
-
-    private void preparaModos(View menuJuegos, LayoutInflater inflater) {
-        modos = (Spinner) menuJuegos.findViewById(R.id.spinnerModos);
-        List<DatosSpiner> empty = new ArrayList<>(0);
-        empty.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
-        modosAdapter = new MultiAdaptador(empty, inflater, actualContext);
-        modos.setAdapter(modosAdapter);
-        modos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (modosAdapter.getItem(position).getTexto() == SELECCIONE_MODO || modosAdapter.getItem(position).getTexto() == SELECCIONE_JUEGO) {
-                    rellenarPartida.setEnabled(false);
-                } else {
-                    rellenarPartida.setEnabled(true);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                rellenarPartida.setEnabled(false);
-            }
-        });
-        modos.setEnabled(false);
-    }
-
-    private void preparaJuegos(View menuJuegos, final LayoutInflater inflater) {
-        juegos = (Spinner) menuJuegos.findViewById(R.id.spinnerJuegos);
-        juegosAdapter = new MultiAdaptador(mListener.getJuegos(), inflater, actualContext);
-        juegos.setAdapter(juegosAdapter);
-        juegos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (juegosAdapter.getItem(position).getTexto() != SELECCIONE_JUEGO) {
-                    modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner)juegos.getSelectedItem()).getId()),inflater,actualContext);
-                    modos.setAdapter(modosAdapter);
-                    modosAdapter.notifyDataSetChanged();
-                    modos.setEnabled(true);
-                    esUnSoloJugador.setEnabled(true);
-                } else {
-                    List<DatosSpiner> empty = new ArrayList<>(0);
-                    empty.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
-                    modosAdapter = new MultiAdaptador(empty, inflater,actualContext);
-                    modos.setAdapter(modosAdapter);
-                    modosAdapter.notifyDataSetChanged();
-                    modos.setEnabled(false);
-                    esUnSoloJugador.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                modos.setEnabled(false);
-            }
-        });
-    }
-
-    private void preparaSwitch(View menuJuegos) {
-        esUnSoloJugador = (Switch) menuJuegos.findViewById(R.id.switchJugador);
-        esUnSoloJugador.setTextOff(MULTIJUGADOR);
-        esUnSoloJugador.setTextOn(UN_JUGADOR);
-        esUnSoloJugador.setChecked(true);
-        esUnSoloJugador.setEnabled(false);
-        esUnSoloJugador.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                esSinglePlayer = isChecked;
-            }
-        });
-    }
-
-    private void preparaBoton(View view){
-        rellenarPartida = (Button) view.findViewById(R.id.crearPartida);
-        rellenarPartida.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.lanzaInforme(((DatosSpiner) juegos.getSelectedItem()).getId(), ((DatosSpiner) modos.getSelectedItem()).getId());
-            }
-        });
-        rellenarPartida.setEnabled(false);
-    }
-
-/*    private void botonActivo() {
-        if(modos.getSelectedItem() != null){
-            DatosSpiner modo = (DatosSpiner)modos.getSelectedItem();
-            if(modo.getTexto() != SELECCIONE_MODO){
-                rellenarPartida.setEnabled(true);
-            }
-        }else {
-            rellenarPartida.setEnabled(false);
-        }
+        return inflater.inflate(R.layout.fragment_menu_juego, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -193,12 +72,11 @@ public class MenuJuego extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }*/
+    }
 
-   @Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.actualContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -224,8 +102,7 @@ public class MenuJuego extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        public List<DatosSpiner> getJuegos();
-        public List<DatosSpiner> getModos(int juegoId);
-        public void lanzaInforme(int juegoId, int modoId);
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }
