@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class MultiAdaptador extends BaseAdapter {
     //CONSTANTES
-    private static final int NUMBER_OF_LAYOUT = 2;
+    private static final int NUMBER_OF_LAYOUT = 1;
 
     //VARIABLES
     private List<DatosSpiner> myDataSpiner;
@@ -62,12 +62,12 @@ public class MultiAdaptador extends BaseAdapter {
         if(row == null){
             if(position%2 == 0) {
                 row = myInflater.inflate(R.layout.multi_adaptor_row, parent , false);
-                row.setBackgroundColor(Color.GREEN);
+                row.setBackgroundColor(Color.BLUE);
                 texto = (TextView) row.findViewById(R.id.spinnerText);
                 texto.setTextColor(Color.WHITE);
             } else {
                 row = myInflater.inflate(R.layout.multi_adaptor_row, parent , false);
-                row.setBackgroundColor(Color.LTGRAY);
+                row.setBackgroundColor(Color.CYAN);
                 texto = (TextView) row.findViewById(R.id.spinnerText);
                 texto.setTextColor(Color.BLACK);
             }
