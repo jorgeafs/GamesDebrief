@@ -1,4 +1,4 @@
-package com.example.jclozano.proyectito;
+package com.example.jorge.gamesdebrief;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,8 +25,10 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 +");");
         db.execSQL("CREATE TABLE "+ PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME
                 +" ( "+
-                    PartidasDB.ModoPartida.MODO_PARTIDA_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
+                    PartidasDB.ModoPartida.MODO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
                     +", "+PartidasDB.ModoPartida.MODO_PARTIDA_NOMBRE+" TEXT "
+                    +", "+PartidasDB.ModoPartida.MODO_JUEGO_ID+" TEXT "
+                    +", FOREING KEY ( "+PartidasDB.ModoPartida.MODO_JUEGO_ID+" ) REFERENCES "+ PartidasDB.Juego.JUEGO_TABLE_NAME+" ( "+ PartidasDB.Juego.JUEGO_ID+" ) "
                 +" );");
         db.execSQL("CREATE TABLE "+PartidasDB.Mapa.MAPA_TABLE_NAME
                 +" ( "+
@@ -56,7 +58,7 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 + ", " + PartidasDB.Partida.PARTIDA_DESCRIPCION + " TEXT "
                 + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_JUEGO + " ) REFERENCES " + PartidasDB.Juego.JUEGO_TABLE_NAME + " ( " + PartidasDB.Juego.JUEGO_ID + " ) "
                 + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MAPA + " ) REFERENCES " + PartidasDB.Mapa.MAPA_TABLE_NAME + " ( " + PartidasDB.Mapa.MAPA_ID + " ) "
-                + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA + " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_PARTIDA_ID + " ) "
+                + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA + " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_ID + " ) "
                 + ", CHECK ( " + PartidasDB.Partida.PARTIDA_ES_GANADA + " IN (0,1))"
                 + ", CHECK ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES + " == ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ALIADOS + " + " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ENEMIGOS + " ) "
                 + " );");
