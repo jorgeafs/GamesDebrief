@@ -1,4 +1,4 @@
-package com.example.jclozano.proyectito;
+package com.example.jorge.gamesdebrief;
 
 import android.provider.BaseColumns;
 
@@ -27,8 +27,16 @@ public class PartidasDB  {
     public static final class ModoPartida implements BaseColumns {
         private ModoPartida () {}
         public static final String MODO_PARTIDA_TABLE_NAME = "table_modo_partida";
-        public static final String MODO_PARTIDA_ID = "modo_partida_id";
+        public static final String MODO_ID = "modo_id";
         public static final String MODO_PARTIDA_NOMBRE = "modo_partida_nombre";
+    }
+
+    public static final class JuegoModoPartida implements BaseColumns {
+        private JuegoModoPartida () {}
+        public static final String JUEGO_MODO_PARTIDA_TABLE_NAME = "table_juego_modo_partida";
+        public static final String JUEGO_MODO_PARTIDA_ID = "juego_modo_partida_id";
+        public static final String JUEGO_MODO_PARTIDA_ID_JUEGO = "juego_modo_partida_id_juego";
+        public static final String JUEGO_MODO_PARTIDA_ID_MODO_PARTIDA = "juego_modo_partida_id_modo_partida";
     }
 
     public static final class Mapa implements BaseColumns {
