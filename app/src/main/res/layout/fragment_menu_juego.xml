@@ -1,7 +1,59 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/menu_juego"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jorge.gamesdebrief.MenuJuego"/>
+    tools:context="com.example.jorge.gamesdebrief.MenuJuego">
+
+    <TextView
+        android:id="@+id/labelJuegos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelJuegos"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+    <Spinner
+        android:id="@+id/spinnerJuegos"
+        android:layout_below="@id/labelJuegos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/labelSwitchJugador"
+        android:layout_below="@id/spinnerJuegos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelSwitchJugador"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+    <Switch
+        android:id="@+id/switchJugador"
+        android:layout_below="@id/labelSwitchJugador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/labelModos"
+        android:layout_below="@id/switchJugador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/labelModos"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+    <Spinner
+        android:id="@+id/spinnerModos"
+        android:layout_below="@id/labelModos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+    <Button
+        android:id="@+id/crearPartida"
+        android:layout_below="@id/spinnerModos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rellenaPartida"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp" />
+</RelativeLayout>
