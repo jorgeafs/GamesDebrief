@@ -4,10 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 
 /**
@@ -33,6 +37,10 @@ public class DetallePartida extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context actualContext;
     private EditText numeroTotalJugadores;
+    private EditText numeroAliados;
+    private EditText numeroEnemigos;
+    private EditText descripcion;
+    private Spinner resultado;
 
     public DetallePartida() {
         // Required empty public constructor
@@ -73,10 +81,49 @@ public class DetallePartida extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_partida, container, false);
-        numeroTotalJugadores = (EditText) view.findViewById(R.id.jugadoresTotal);
-
+        asociaEditviews(view);
         return view;
     }
+
+    private void asociaEditviews(View view) {
+        numeroTotalJugadores = (EditText) view.findViewById(R.id.jugadoresTotal);
+        numeroEnemigos = (EditText) view.findViewById(R.id.jugadoresEnemigos);
+        numeroAliados = (EditText) view.findViewById(R.id.jugadoresAliados);
+        descripcion = (EditText) view.findViewById(R.id.descripcion);
+       // preparaListeners(numeroTotalJugadores); no tiene sentido ponerle listener si los otros dos EditText le van a cambiar el valor
+        preparaListeners(numeroAliados);
+        preparaListeners(numeroEnemigos);
+    }
+
+    private void preparaListeners(EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    calculaTotales();
+                }
+            }
+        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    calculaTotales();
+                }
+                return false;//continua con los listeners
+            }
+        });
+    }
+
+    private void calculaTotales() {
+        int numTotal;
+        if((!numeroEnemigos.hasFocus()|| !numeroEnemigos.isInEditMode())&&(!numeroTotalJugadores.hasFocus()|| !numeroTotalJugadores.isInEditMode())&&(!numeroAliados.hasFocus()|| !numeroAliados.isInEditMode())){
+            numTotal = Integer.parseInt(numeroAliados.getText().toString());
+            numTotal += Integer.parseInt(numeroEnemigos.getText().toString());
+            numeroTotalJugadores.setText(numTotal);
+        }
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

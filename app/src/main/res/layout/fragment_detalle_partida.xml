@@ -1,21 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.jorge.gamesdebrief.DetallePartida">
-<TextView
-    android:id="@+id/jugadoresTotalLabel"
-    android:text="@string/jugadoresTotal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true" />
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/jugadoresAliadosLabel"
+        android:text="@string/jugadoresAliados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp" />
+
+    <EditText
+        android:id="@+id/jugadoresAliados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/jugadoresAliadosLabel"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/jugadoresEnemigosLabel"
+        android:text="@string/jugadoresEnemigos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jugadoresAliados"
+        android:layout_margin="10dp" />
+
+    <EditText
+        android:id="@+id/jugadoresEnemigos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jugadoresAliados"
+        android:layout_toRightOf="@id/jugadoresEnemigosLabel"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:id="@+id/jugadoresTotalLabel"
+        android:text="@string/jugadoresTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/jugadoresEnemigos"
+        android:layout_margin="10dp"/>
 
     <EditText
         android:id="@+id/jugadoresTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
-        android:layout_below="@+id/jugadoresTotalLabel" />
+        android:layout_below="@id/jugadoresEnemigos"
+        android:layout_toRightOf="@id/jugadoresTotalLabel"
+        android:layout_margin="10dp" />
 
+    <TextView
+        android:id="@+id/descripcionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/descripcion"
+        android:layout_below="@id/jugadoresTotal"
+        android:layout_margin="10dp" />
 
+    <EditText
+        android:id="@+id/descripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descripcionLabel"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/spinnerResultadoLabel"
+        android:text="@string/resultadoPartida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/descripcion"
+        android:layout_margin="10dp" />
+    <Spinner
+        android:id="@+id/spinnerResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descripcion"
+        android:layout_toRightOf="@id/jugadoresTotalLabel"
+        android:layout_margin="10dp" />
 </RelativeLayout>
