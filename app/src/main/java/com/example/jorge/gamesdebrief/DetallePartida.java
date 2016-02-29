@@ -9,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -41,6 +45,7 @@ public class DetallePartida extends Fragment {
     private EditText numeroEnemigos;
     private EditText descripcion;
     private Spinner resultado;
+    private Button salvar;
 
     public DetallePartida() {
         // Required empty public constructor
@@ -82,7 +87,21 @@ public class DetallePartida extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_partida, container, false);
         asociaEditviews(view);
+        resultado = (Spinner) view.findViewById(R.id.spinnerResultado);
+        preparaSpinner(inflater);
+        preparaBoton(view);
         return view;
+    }
+
+    private void preparaBoton(View view) {
+        salvar = (Button) view.findViewById(R.id.guardaDatos);
+        salvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!numeroAliados.getText().toString().isEmpty()&&!numeroEnemigos.getText().toString().isEmpty()&&!numeroTotalJugadores.getText().toString().isEmpty()&&!descripcion.getText().toString().isEmpty())
+                    mListener.guardarDatos();
+            }
+        });
     }
 
     private void asociaEditviews(View view) {
@@ -90,9 +109,26 @@ public class DetallePartida extends Fragment {
         numeroEnemigos = (EditText) view.findViewById(R.id.jugadoresEnemigos);
         numeroAliados = (EditText) view.findViewById(R.id.jugadoresAliados);
         descripcion = (EditText) view.findViewById(R.id.descripcion);
+
        // preparaListeners(numeroTotalJugadores); no tiene sentido ponerle listener si los otros dos EditText le van a cambiar el valor
         preparaListeners(numeroAliados);
         preparaListeners(numeroEnemigos);
+    }
+
+    private void preparaSpinner(LayoutInflater inflater) {
+        DatosSpiner itemResultados = null;
+        MultiAdaptador adaptador = null;
+        List<DatosSpiner> resultados = new ArrayList<>();
+        itemResultados = new DatosSpiner("Seleccione un resultado", 0);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Ganada", 1);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Empatada", 2);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Perdida", 3);
+        resultados.add(itemResultados);
+        adaptador = new MultiAdaptador(resultados,inflater,actualContext);
+        resultado.setAdapter(adaptador);
     }
 
     private void preparaListeners(EditText editText) {
@@ -116,25 +152,31 @@ public class DetallePartida extends Fragment {
     }
 
     private void calculaTotales() {
-        int numTotal;
+        int numTotal=0;
         if((!numeroEnemigos.hasFocus()|| !numeroEnemigos.isInEditMode())&&(!numeroTotalJugadores.hasFocus()|| !numeroTotalJugadores.isInEditMode())&&(!numeroAliados.hasFocus()|| !numeroAliados.isInEditMode())){
-            numTotal = Integer.parseInt(numeroAliados.getText().toString());
-            numTotal += Integer.parseInt(numeroEnemigos.getText().toString());
-            numeroTotalJugadores.setText(numTotal);
+            if(!numeroAliados.getText().toString().isEmpty()) {
+                numTotal = Integer.parseInt(numeroAliados.getText().toString());
+
+            }
+            if(!numeroEnemigos.getText().toString().isEmpty()) {
+                numTotal += Integer.parseInt(numeroEnemigos.getText().toString());
+            }
+            numeroTotalJugadores.setText(Integer.toString(numTotal));
         }
     }
 
 
-    // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        actualContext = context;
         this.actualContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -161,7 +203,6 @@ public class DetallePartida extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        public void guardarDatos();
     }
 }
