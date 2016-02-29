@@ -17,4 +17,6 @@
     <string name="descripcion">Introduce aqui los acontecimientos de la partida</string>
     <string name="resultadoPartida">Resultado partida</string>
     <string name="salvarInforme">Salvar el informe</string>
+    <string name="falta">Faltan los siguientes datos en el informe:</string>
+    <string name="labelMapas">Seleccione un mapa</string>
 </resources>

@@ -17,6 +17,7 @@
         android:inputType="numberDecimal"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/jugadoresAliadosLabel"
+        android:imeOptions="actionNext"
         android:layout_margin="10dp" />
     <TextView
         android:id="@+id/jugadoresEnemigosLabel"
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:layout_below="@id/jugadoresAliados"
+        android:imeOptions="actionNext"
         android:layout_toRightOf="@id/jugadoresEnemigosLabel"
         android:layout_margin="10dp" />
 
@@ -49,6 +51,7 @@
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:layout_below="@id/jugadoresEnemigos"
+        android:imeOptions="actionNext"
         android:layout_toRightOf="@id/jugadoresTotalLabel"
         android:layout_margin="10dp" />
 
@@ -65,10 +68,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/descripcionLabel"
+        android:imeOptions="actionDone"
+        android:inputType="textImeMultiLine"
         android:layout_margin="10dp" />
     <TextView
         android:id="@+id/spinnerMapaLabel"
-        android:text="@string/resultadoPartida"
+        android:text="@string/labelMapas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/descripcion"
