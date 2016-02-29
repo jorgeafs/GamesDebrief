@@ -1,13 +1,22 @@
 package com.example.jorge.gamesdebrief;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -17,6 +26,8 @@ import android.widget.EditText;
  * to handle interaction events.
  * Use the {@link DetallePartida#newInstance} factory method to
  * create an instance of this fragment.
+ * TODO:
+ *  Añadir "vista elevada" para añadir un nuevo mapa....
  */
 public class DetallePartida extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -33,6 +44,15 @@ public class DetallePartida extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context actualContext;
     private EditText numeroTotalJugadores;
+    private EditText numeroAliados;
+    private EditText numeroEnemigos;
+    private EditText descripcion;
+    private Spinner resultado;
+    private Spinner mapas;
+    private Button salvar;
+    private Partida informe;
+    private MultiAdaptador adaptadorResultados;
+    private MultiAdaptador adaptadorMapa;
 
     public DetallePartida() {
         // Required empty public constructor
@@ -65,6 +85,10 @@ public class DetallePartida extends Fragment {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getInt(ARG_PARAM2);
             mParam3 = getArguments().getBoolean(ARG_PARAM3);
+            informe = new Partida();
+            informe.setIdJuego(mParam1);
+            informe.setIdModo(mParam2);
+            informe.setSinglePlayer(mParam3);
         }
     }
 
@@ -73,21 +97,154 @@ public class DetallePartida extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_partida, container, false);
-        numeroTotalJugadores = (EditText) view.findViewById(R.id.jugadoresTotal);
-
+        asociaEditviews(view);
+        preparaResultado(inflater, view);
+        preparaMapa(inflater, view);
+        preparaBoton(view);
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    private void preparaBoton(View view) {
+        salvar = (Button) view.findViewById(R.id.guardaDatos);
+        salvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (informe.getNumeroJugadoresAliados() > 0 &&
+                        informe.getNumeroJugadoresEnemigos() > 0 &&
+                        informe.getNumeroJugadoresTotales() > 0 &&
+                        !informe.getDescripccion().isEmpty() &&
+                        informe.getResultado() > 0 &&
+                        informe.getIdMapa() > 0) {
+                    mListener.guardarDatos(informe);
+                } else {
+                    mListener.faltanDatos(informe);
+                }
+            }
+        });
+    }
+
+    private void asociaEditviews(View view) {
+        numeroTotalJugadores = (EditText) view.findViewById(R.id.jugadoresTotal);
+        numeroEnemigos = (EditText) view.findViewById(R.id.jugadoresEnemigos);
+        numeroAliados = (EditText) view.findViewById(R.id.jugadoresAliados);
+        descripcion = (EditText) view.findViewById(R.id.descripcion);
+
+       // preparaListeners(numeroTotalJugadores); no tiene sentido ponerle listener si los otros dos EditText le van a cambiar el valor
+        preparaListeners(numeroAliados);
+        preparaListeners(numeroEnemigos);
+        preparaListeners(descripcion);
+    }
+
+    private void preparaResultado(LayoutInflater inflater, View view) {
+        resultado = (Spinner) view.findViewById(R.id.spinnerResultado);
+        DatosSpiner itemResultados = null;
+        adaptadorResultados = null;
+        List<DatosSpiner> resultados = new ArrayList<>();
+        itemResultados = new DatosSpiner("Seleccione un resultado", 0);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Ganada", 1);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Empatada", 2);
+        resultados.add(itemResultados);
+        itemResultados = new DatosSpiner("Perdida", 3);
+        resultados.add(itemResultados);
+        adaptadorResultados = new MultiAdaptador(resultados,inflater,actualContext);
+        resultado.setAdapter(adaptadorResultados);
+        resultado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (adaptadorResultados.getItem(position).getId() != 0) {
+                    informe.setResultado(adaptadorResultados.getItem(position).getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void preparaMapa(LayoutInflater inflater, View view) {
+        mapas = (Spinner) view.findViewById(R.id.spinnerMapa);
+        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
+        mapas.setAdapter(adaptadorMapa);
+        mapas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (adaptadorMapa.getItem(position).getId() != 0) {
+                    informe.setIdMapa(adaptadorMapa.getItem(position).getId());
+                } else if (adaptadorMapa.getItem(position).getId() == -1) {// marca de id para añadir un nuevo mapa...
+                    //mostrar una vista parcial en la que se añada el nombre del mapa.
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void preparaListeners(final EditText editText) {
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    calculaTotales();
+                }
+            }
+        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (v.getId() == descripcion.getId()) {
+                        informe.setDescripccion(descripcion.getText().toString());
+                    } else {
+                        calculaTotales();
+                    }
+                    hideKeyboard(editText);
+                }
+                return false;//continua con los listeners
+            }
+        });
+    }
+    private void hideKeyboard(EditText editText) {
+        InputMethodManager imm = (InputMethodManager) actualContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+    private void calculaTotales() {
+        int numAliados=0, numEnemigos = 0;
+        if((!numeroEnemigos.hasFocus()|| !numeroEnemigos.isInEditMode())&&(!numeroTotalJugadores.hasFocus()|| !numeroTotalJugadores.isInEditMode())&&(!numeroAliados.hasFocus()|| !numeroAliados.isInEditMode())){
+            if(!numeroAliados.getText().toString().isEmpty()) {
+                numAliados = Integer.parseInt(numeroAliados.getText().toString());
+                informe.setNumeroJugadoresAliados(Integer.parseInt(numeroAliados.getText().toString()));
+            }
+            if(!numeroEnemigos.getText().toString().isEmpty()) {
+                numEnemigos = Integer.parseInt(numeroEnemigos.getText().toString());
+                informe.setNumeroJugadoresEnemigos(Integer.parseInt(numeroEnemigos.getText().toString()));
+            }
+
+            numeroTotalJugadores.setText(Integer.toString(numAliados+numEnemigos));
+            informe.setNumeroJugadoresTotales(Integer.parseInt(numeroTotalJugadores.getText().toString()));
+        }
+    }
+
+
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        actualContext = context;
         this.actualContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -114,7 +271,8 @@ public class DetallePartida extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        public void guardarDatos(Partida informe);
+        public void faltanDatos(Partida aTostar);
+        public List<DatosSpiner> getMapas(int idJuegos);
     }
 }
