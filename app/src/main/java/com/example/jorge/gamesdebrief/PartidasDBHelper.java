@@ -41,10 +41,8 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 +" ( "+
                     PartidasDB.Juego.JUEGO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
                     +", "+PartidasDB.Juego.JUEGO_NOMBRE+" TETX "
-                    +", "+PartidasDB.Juego.JUEGO_IS_SINGLE_PLAYER+" NUMERIC "
                     +", "+PartidasDB.Juego.JUEGO_ID_TIPO+" INTEGER "
                     +", FOREIGN KEY ( "+ PartidasDB.Juego.JUEGO_ID_TIPO+" ) REFERENCES "+ PartidasDB.Tipo.TIPO_TABLE_NAME+" ( "+ PartidasDB.Tipo.TIPO_ID+" ) "
-                    +", CHECK ( "+ PartidasDB.Juego.JUEGO_IS_SINGLE_PLAYER +" IN (0,1))"
                 +" );");
         //tabla partida
         db.execSQL("CREATE TABLE " + PartidasDB.Partida.PARTIDA_TABLE_NAME
@@ -56,12 +54,14 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 + ", " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES + " INTEGER "
                 + ", " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ALIADOS + " INTEGER "
                 + ", " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ENEMIGOS + " INTEGER "
-                + ", " + PartidasDB.Partida.PARTIDA_ES_GANADA + " NUMERIC "
+                + ", " + PartidasDB.Partida.PARTIDA_RESULTADO + " NUMERIC "
+                + ", " + PartidasDB.Partida.JUEGO_IS_SINGLE_PLAYER+" NUMERIC "
                 + ", " + PartidasDB.Partida.PARTIDA_DESCRIPCION + " TEXT "
                 + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_JUEGO + " ) REFERENCES " + PartidasDB.Juego.JUEGO_TABLE_NAME + " ( " + PartidasDB.Juego.JUEGO_ID + " ) "
                 + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MAPA + " ) REFERENCES " + PartidasDB.Mapa.MAPA_TABLE_NAME + " ( " + PartidasDB.Mapa.MAPA_ID + " ) "
                 + ", FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA + " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_ID + " ) "
-                + ", CHECK ( " + PartidasDB.Partida.PARTIDA_ES_GANADA + " IN (0,1))"
+                + ", CHECK ( " + PartidasDB.Partida.JUEGO_IS_SINGLE_PLAYER +" IN (0,1))"
+                + ", CHECK ( " + PartidasDB.Partida.PARTIDA_RESULTADO + " IN (1,2,3)"//1=GANADA,2=EMPATADA,3=PERDIDA
                 + ", CHECK ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES + " == ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ALIADOS + " + " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ENEMIGOS + " ) "
                 + " );");
         //tabla juego modo partida
@@ -69,9 +69,10 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 + " ( " +
                 PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT "
                 + ", " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID+ " INTEGER "
-                + ", " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_MODO_PARTIDA + " INTEGER "
-                + ", FOREIGN KEY ( " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID + " ) REFERENCES " + PartidasDB.Juego.JUEGO_TABLE_NAME + " ( " + PartidasDB.Juego.JUEGO_ID + " ) "
-                + ", FOREIGN KEY ( " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_MODO_PARTIDA+ " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_ID + " ) "
+                +", "+PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_JUEGO+ " INTEGER"
+                + ", " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_MODO + " INTEGER "
+                + ", FOREIGN KEY ( " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_JUEGO + " ) REFERENCES " + PartidasDB.Juego.JUEGO_TABLE_NAME + " ( " + PartidasDB.Juego.JUEGO_ID + " ) "
+                + ", FOREIGN KEY ( " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_ID_MODO + " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_ID + " ) "
                 + " );");
     }
 

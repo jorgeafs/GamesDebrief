@@ -20,7 +20,6 @@ public class PartidasDB  {
         public static final String JUEGO_TABLE_NAME = "table_juego";
         public static final String JUEGO_ID = "juego_id";
         public static final String JUEGO_NOMBRE = "juego_nombre";
-        public static final String JUEGO_IS_SINGLE_PLAYER = "juego_is_single_player";
         public static final String JUEGO_ID_TIPO = "juego_id_tipo";
     }
 
@@ -36,7 +35,7 @@ public class PartidasDB  {
         public static final String JUEGO_MODO_PARTIDA_TABLE_NAME = "table_juego_modo_partida";
         public static final String JUEGO_MODO_PARTIDA_ID = "juego_modo_partida_id";
         public static final String JUEGO_MODO_PARTIDA_ID_JUEGO = "juego_modo_partida_id_juego";
-        public static final String JUEGO_MODO_PARTIDA_ID_MODO_PARTIDA = "juego_modo_partida_id_modo_partida";
+        public static final String JUEGO_MODO_PARTIDA_ID_MODO = "juego_modo_partida_id_modo";
     }
 
     public static final class Mapa implements BaseColumns {
@@ -56,7 +55,8 @@ public class PartidasDB  {
         public static final String PARTIDA_NUMERO_JUGADORES = "partida_numero_jugadores";
         public static final String PARTIDA_NUMERO_JUGADORES_ALIADOS = "partida_numero_jugadores_aliados";
         public static final String PARTIDA_NUMERO_JUGADORES_ENEMIGOS = "partida_numero_jugadores_enemigos";
-        public static final String PARTIDA_ES_GANADA = "partida_es_ganada";
+        public static final String JUEGO_IS_SINGLE_PLAYER = "juego_is_single_player"; //0=multiplayer,1=singlePlayer
+        public static final String PARTIDA_RESULTADO = "partida_resultado";//1=GANADA,2=EMPATADA,3=PERDIDA
         public static final String PARTIDA_DESCRIPCION = "descripcion";
     }
 }

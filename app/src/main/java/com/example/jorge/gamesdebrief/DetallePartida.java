@@ -1,7 +1,6 @@
 package com.example.jorge.gamesdebrief;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.KeyEvent;
@@ -9,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -45,7 +45,11 @@ public class DetallePartida extends Fragment {
     private EditText numeroEnemigos;
     private EditText descripcion;
     private Spinner resultado;
+    private Spinner mapas;
     private Button salvar;
+    private Partida informe;
+    private MultiAdaptador adaptadorModo;
+    private MultiAdaptador adaptadorMapa;
 
     public DetallePartida() {
         // Required empty public constructor
@@ -78,6 +82,10 @@ public class DetallePartida extends Fragment {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getInt(ARG_PARAM2);
             mParam3 = getArguments().getBoolean(ARG_PARAM3);
+            informe = new Partida();
+            informe.setIdJuego(mParam1);
+            informe.setIdModo(mParam2);
+            informe.setSinglePlayer(mParam3);
         }
     }
 
@@ -87,8 +95,8 @@ public class DetallePartida extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_partida, container, false);
         asociaEditviews(view);
-        resultado = (Spinner) view.findViewById(R.id.spinnerResultado);
-        preparaSpinner(inflater);
+        preparaResultado(inflater, view);
+        preparaMapa(inflater, view);
         preparaBoton(view);
         return view;
     }
@@ -98,8 +106,12 @@ public class DetallePartida extends Fragment {
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!numeroAliados.getText().toString().isEmpty()&&!numeroEnemigos.getText().toString().isEmpty()&&!numeroTotalJugadores.getText().toString().isEmpty()&&!descripcion.getText().toString().isEmpty())
+                if (!numeroAliados.getText().toString().isEmpty() && !numeroEnemigos.getText().toString().isEmpty() && !numeroTotalJugadores.getText().toString().isEmpty() && !descripcion.getText().toString().isEmpty()) {
+                    informe.setNumeroJugadoresAliados(Integer.parseInt(numeroAliados.getText().toString()));
+                    informe.setNumeroJugadoresEnemigos(Integer.parseInt(numeroEnemigos.getText().toString()));
+                    informe.setNumeroJugadoresTotales(Integer.parseInt(numeroTotalJugadores.getText().toString()));
                     mListener.guardarDatos();
+                }
             }
         });
     }
@@ -115,9 +127,10 @@ public class DetallePartida extends Fragment {
         preparaListeners(numeroEnemigos);
     }
 
-    private void preparaSpinner(LayoutInflater inflater) {
+    private void preparaResultado(LayoutInflater inflater, View view) {
+        resultado = (Spinner) view.findViewById(R.id.spinnerResultado);
         DatosSpiner itemResultados = null;
-        MultiAdaptador adaptador = null;
+        adaptadorModo = null;
         List<DatosSpiner> resultados = new ArrayList<>();
         itemResultados = new DatosSpiner("Seleccione un resultado", 0);
         resultados.add(itemResultados);
@@ -127,8 +140,40 @@ public class DetallePartida extends Fragment {
         resultados.add(itemResultados);
         itemResultados = new DatosSpiner("Perdida", 3);
         resultados.add(itemResultados);
-        adaptador = new MultiAdaptador(resultados,inflater,actualContext);
-        resultado.setAdapter(adaptador);
+        adaptadorModo = new MultiAdaptador(resultados,inflater,actualContext);
+        resultado.setAdapter(adaptadorModo);
+        resultado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (adaptadorModo.getItem(position).getId() != 0) {
+                    informe.setResultado(adaptadorModo.getItem(position).getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void preparaMapa(LayoutInflater inflater, View view) {
+        mapas = (Spinner) view.findViewById(R.id.spinnerMapa);
+        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
+        mapas.setAdapter(adaptadorMapa);
+        mapas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(adaptadorMapa.getItem(position).getId()!=0){
+                    informe.setResultado(adaptadorMapa.getItem(position).getId());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void preparaListeners(EditText editText) {

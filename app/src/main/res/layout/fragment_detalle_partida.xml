@@ -67,17 +67,31 @@
         android:layout_below="@id/descripcionLabel"
         android:layout_margin="10dp" />
     <TextView
-        android:id="@+id/spinnerResultadoLabel"
+        android:id="@+id/spinnerMapaLabel"
         android:text="@string/resultadoPartida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/descripcion"
         android:layout_margin="10dp" />
     <Spinner
-        android:id="@+id/spinnerResultado"
+        android:id="@+id/spinnerMapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/descripcion"
+        android:layout_toRightOf="@id/jugadoresTotalLabel"
+        android:layout_margin="10dp" />
+    <TextView
+        android:id="@+id/spinnerResultadoLabel"
+        android:text="@string/resultadoPartida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerMapa"
+        android:layout_margin="10dp" />
+    <Spinner
+        android:id="@+id/spinnerResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinnerMapa"
         android:layout_toRightOf="@id/jugadoresTotalLabel"
         android:layout_margin="10dp" />
     <Button
