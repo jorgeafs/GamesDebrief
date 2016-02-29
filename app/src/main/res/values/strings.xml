@@ -19,4 +19,7 @@
     <string name="salvarInforme">Salvar el informe</string>
     <string name="falta">Faltan los siguientes datos en el informe:</string>
     <string name="labelMapas">Seleccione un mapa</string>
+    <string name="añadirNombre">Añada</string>
+    <string name="añadirNuevoNombre">Añada otro más</string>
+    <string name="noHacerNada">Volver</string>
 </resources>

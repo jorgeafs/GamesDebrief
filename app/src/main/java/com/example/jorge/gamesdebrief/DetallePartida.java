@@ -1,5 +1,6 @@
 package com.example.jorge.gamesdebrief;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,7 +30,7 @@ import java.util.List;
  * TODO:
  *  Añadir "vista elevada" para añadir un nuevo mapa....
  */
-public class DetallePartida extends Fragment {
+public class DetallePartida extends Fragment implements DialogAñadir.OnDialogInteractionListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "juegoId";
@@ -53,6 +54,7 @@ public class DetallePartida extends Fragment {
     private Partida informe;
     private MultiAdaptador adaptadorResultados;
     private MultiAdaptador adaptadorMapa;
+    private String nombre = null;
 
     public DetallePartida() {
         // Required empty public constructor
@@ -165,17 +167,27 @@ public class DetallePartida extends Fragment {
         });
     }
 
-    private void preparaMapa(LayoutInflater inflater, View view) {
+    private void preparaMapa(final LayoutInflater inflater, View view) {
         mapas = (Spinner) view.findViewById(R.id.spinnerMapa);
         adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
         mapas.setAdapter(adaptadorMapa);
         mapas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (adaptadorMapa.getItem(position).getId() != 0) {
+                if (adaptadorMapa.getItem(position).getId() > 0) {
                     informe.setIdMapa(adaptadorMapa.getItem(position).getId());
                 } else if (adaptadorMapa.getItem(position).getId() == -1) {// marca de id para añadir un nuevo mapa...
                     //mostrar una vista parcial en la que se añada el nombre del mapa.
+                    DialogFragment añadir = DialogAñadir.newInstance("mapa");
+                    añadir.setShowsDialog(true);
+                    añadir.show(getFragmentManager(),"dialog");
+                    if(nombre != null) {
+                        mListener.newMapa(nombre,mParam1);
+                        nombre = null;
+                        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
+                        mapas.setAdapter(adaptadorMapa);
+                        adaptadorMapa.notifyDataSetChanged();
+                    }
                 }
             }
 
@@ -260,6 +272,11 @@ public class DetallePartida extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void sendNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -274,5 +291,6 @@ public class DetallePartida extends Fragment {
         public void guardarDatos(Partida informe);
         public void faltanDatos(Partida aTostar);
         public List<DatosSpiner> getMapas(int idJuegos);
+        public void newMapa(String nombre, int idJuegos);
     }
 }

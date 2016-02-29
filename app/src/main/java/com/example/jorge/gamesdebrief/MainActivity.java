@@ -150,6 +150,12 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
         mapas.add(new DatosSpiner("Selecciona un mapa", 0));
         mapas.add(new DatosSpiner("Inferno",1));
         mapas.add(new DatosSpiner("Hell's door",2));
+        mapas.add(new DatosSpiner("Añada nuevo mapa",-1));
         return mapas;
+    }
+
+    @Override
+    public void newMapa(String nombre, int idJuegos) {
+        tostar("Deberia añadir a la lista de mapas correspondiente "+nombre);
     }
 }
