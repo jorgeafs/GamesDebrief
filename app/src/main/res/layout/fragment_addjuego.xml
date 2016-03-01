@@ -25,26 +25,53 @@
         android:layout_alignParentEnd="true" />
     <LinearLayout
         android:id="@+id/linearSpinner"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/nombreJuego">
-        <Spinner
-            android:id="@+id/genero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
-        <Spinner
-            android:id="@+id/nuevoMapa"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
-        <Spinner
-            android:id="@+id/nuevoModo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"/>
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="center"
+                android:text="@string/genero"/>
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="center"
+                android:text="@string/mapa"/>
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="center"
+                android:text="@string/modo"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:id="@+id/genero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"/>
+            <Spinner
+                android:id="@+id/nuevoMapa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"/>
+            <Spinner
+                android:id="@+id/nuevoModo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"/>
+        </LinearLayout>
     </LinearLayout>
     <GridView
         android:id="@+id/gridView"
