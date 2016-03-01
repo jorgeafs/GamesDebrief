@@ -1,12 +1,16 @@
 package com.example.jorge.gamesdebrief;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import com.example.jorge.gamesdebrief.fragments.DetallePartida;
+import com.example.jorge.gamesdebrief.fragments.MenuJuego;
+import com.example.jorge.gamesdebrief.fragments.MenuPrincipal;
 
 import java.util.ArrayList;
 import java.util.List;

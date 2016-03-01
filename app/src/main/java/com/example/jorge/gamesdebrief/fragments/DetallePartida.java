@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief;
+package com.example.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -15,6 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import com.example.jorge.gamesdebrief.R;
 
 import java.util.ArrayList;
 import java.util.List;

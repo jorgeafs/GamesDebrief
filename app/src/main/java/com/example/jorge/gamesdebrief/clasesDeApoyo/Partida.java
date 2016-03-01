@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief;
+package com.example.jorge.gamesdebrief.clasesDeApoyo;
 
 /**
  * Created by Jorge on 29/02/2016.

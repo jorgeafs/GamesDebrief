@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief;
+package com.example.jorge.gamesdebrief.database;
 
 import android.provider.BaseColumns;
 

@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief;
+package com.example.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.jorge.gamesdebrief.R;
 
 /**
  * Created by Jorge on 29/02/2016.

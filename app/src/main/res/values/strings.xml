@@ -22,4 +22,9 @@
     <string name="añadirNombre">Añada</string>
     <string name="añadirNuevoNombre">Añada otro más</string>
     <string name="noHacerNada">Volver</string>
+    <string name="nombreJuegonuevo">Nombre juego nuevo</string>
+    <string name="juego">Juegos</string>
+    <string name="genero">Generos</string>
+    <string name="modo">Modos</string>
+    <string name="muestraEstadisticas">Estadisticas</string>
 </resources>
