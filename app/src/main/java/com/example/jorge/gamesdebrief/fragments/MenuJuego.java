@@ -1,5 +1,6 @@
 package com.example.jorge.gamesdebrief.fragments;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -37,6 +38,10 @@ public class MenuJuego extends Fragment {
     //Constantes
     private static final String SELECCIONE_MODO = "Seleccione un modo";
     private static final String SELECCIONE_JUEGO = "Seleccione un juego";
+    private static final String AÑADA_UN_JUEGO = "Añada un juego nuevo";
+    private static final String AÑADA_UN_MODO = "Añada un modo nuevo";
+    private static final String JUEGO = "juego";
+    private static final String MODO = "modo";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -108,8 +113,13 @@ public class MenuJuego extends Fragment {
         modos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (modosAdapter.getItem(position).getTexto() == SELECCIONE_MODO || modosAdapter.getItem(position).getTexto() == SELECCIONE_JUEGO) {
+                if (modosAdapter.getItem(position).getId()==0) {
                     rellenarPartida.setEnabled(false);
+                } else if(modosAdapter.getItem(position).getId() == -1){
+                    rellenarPartida.setEnabled(false);
+                    DialogFragment añadir = DialogAñadir.newInstance(MODO);
+                    añadir.setShowsDialog(true);
+                    añadir.show(getFragmentManager(), "dialog");
                 } else {
                     rellenarPartida.setEnabled(true);
                 }
@@ -130,13 +140,7 @@ public class MenuJuego extends Fragment {
         juegos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (juegosAdapter.getItem(position).getTexto() != SELECCIONE_JUEGO) {
-                    modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner)juegos.getSelectedItem()).getId()),inflater,actualContext);
-                    modos.setAdapter(modosAdapter);
-                    modosAdapter.notifyDataSetChanged();
-                    modos.setEnabled(true);
-                    esUnSoloJugador.setEnabled(true);
-                } else {
+                if (juegosAdapter.getItem(position).getId() == 0) {
                     List<DatosSpiner> empty = new ArrayList<>(0);
                     empty.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
                     modosAdapter = new MultiAdaptador(empty, inflater,actualContext);
@@ -144,6 +148,19 @@ public class MenuJuego extends Fragment {
                     modosAdapter.notifyDataSetChanged();
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
+                } else if(juegosAdapter.getItem(position).getId() == -1) {
+                    modos.setEnabled(false);
+                    esUnSoloJugador.setEnabled(false);
+                    DialogFragment añadir = DialogAñadir.newInstance(JUEGO);
+                    añadir.setShowsDialog(true);
+                    añadir.show(getFragmentManager(), "dialog");
+
+                } else {
+                    modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner)juegos.getSelectedItem()).getId()),inflater,actualContext);
+                    modos.setAdapter(modosAdapter);
+                    modosAdapter.notifyDataSetChanged();
+                    modos.setEnabled(true);
+                    esUnSoloJugador.setEnabled(true);
                 }
             }
 

@@ -1,28 +1,41 @@
 package com.example.jorge.gamesdebrief;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import com.example.jorge.gamesdebrief.fragments.Addjuego;
 import com.example.jorge.gamesdebrief.fragments.DetallePartida;
+import com.example.jorge.gamesdebrief.fragments.DialogAñadir;
+import com.example.jorge.gamesdebrief.fragments.Estadisticas;
 import com.example.jorge.gamesdebrief.fragments.MenuJuego;
 import com.example.jorge.gamesdebrief.fragments.MenuPrincipal;
 
+import java.io.DataInput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements MenuPrincipal.OnFragmentInteractionListener, MenuJuego.OnFragmentInteractionListener, DetallePartida.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements MenuPrincipal.OnFragmentInteractionListener, MenuJuego.OnFragmentInteractionListener, DetallePartida.OnFragmentInteractionListener, DialogAñadir.OnDialogInteractionListener, Addjuego.OnFragmentInteractionListener, Estadisticas.OnFragmentInteractionListener {
     //Constants
     private static final String MENU_JUEGO = "menu_juego";
     private static final String MENU_PRINCIPAL = "menu_principal";
     private static final String DETALLE_PARTIDA = "detalle_partida";
 
+    private static final String MAPA = "mapa";
+    private static final String JUEGO = "juego";
+    private static final String MODO = "modo";
+    private static final String GENERO = "genero";
+
     private static final String SELECCIONE_MODO = "Seleccione un modo";
     private static final String SELECCIONE_JUEGO = "Seleccione un juego";
+    private static final String AÑADA_UN_JUEGO = "Añada un juego nuevo";
+    private static final String AÑADA_UN_MODO = "Añada un modo nuevo";
 
 
     //Variables
@@ -74,33 +87,38 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
 
     @Override
     public void añadeJuego() {
-        tostar("esta opcion no esta disponible todavia");
+        //tostar("esta opcion no esta disponible todavia");
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.singleContainer,new Addjuego());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
     public void eligeEstadiscasJuego() {
-        tostar("esta opcion no esta disponible todavia");
+        //tostar("esta opcion no esta disponible todavia");
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.singleContainer,new Estadisticas());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override//Debe hacer una llamada a la base de datos y obtener la lista de DatosSpiner para juegos, por ahora se crea a mano
     public List<DatosSpiner> getJuegos() {
         List<DatosSpiner> juegos = new ArrayList<>();
-        DatosSpiner datos = new DatosSpiner(SELECCIONE_JUEGO,0);
-        juegos.add(datos);
-        datos = new DatosSpiner("Doom",1);
-        juegos.add(datos);
+        juegos.add( new DatosSpiner(SELECCIONE_JUEGO,0));
+        juegos.add( new DatosSpiner("Doom",1));
+        juegos.add( new DatosSpiner(AÑADA_UN_JUEGO,-1));
         return juegos;
     }
 
     @Override
     public List<DatosSpiner> getModos(int juegoId) {
         List<DatosSpiner> modos = new ArrayList<>();
-        DatosSpiner datos = new DatosSpiner(SELECCIONE_MODO,0);
-        modos.add(datos);
-        datos = new DatosSpiner("Historia",1);
-        modos.add(datos);
-        datos = new DatosSpiner("Todos contra todos",2);
-        modos.add(datos);
+        modos.add(new DatosSpiner(SELECCIONE_MODO,0));
+        modos.add( new DatosSpiner("Historia",1));
+        modos.add( new DatosSpiner("Todos contra todos",2));
+        modos.add( new DatosSpiner(AÑADA_UN_MODO,-1));
         return modos;
     }
 
@@ -159,7 +177,25 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
-    public void newMapa(String nombre, int idJuegos) {
-        tostar("Deberia añadir a la lista de mapas correspondiente "+nombre);
+    public void sendNombre(String dato, String nombreDato) {
+        switch (nombreDato) {
+            case MAPA:
+                tostar("Falta añadir a db y recargar el spinner "+nombreDato);
+                break;
+            case JUEGO:
+                tostar("Falta añadir a db y recargar el spinner "+nombreDato);
+                break;
+            case MODO:
+                tostar("Falta añadir a db y recargar el spinner "+nombreDato);
+                break;
+            case GENERO:
+                tostar("Falta añadir a db y recargar el spinner "+nombreDato);
+                break;
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

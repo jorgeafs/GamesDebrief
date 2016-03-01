@@ -35,12 +35,16 @@ import java.util.List;
  * TODO:
  *  Añadir "vista elevada" para añadir un nuevo mapa....
  */
-public class DetallePartida extends Fragment implements DialogAñadir.OnDialogInteractionListener {
+public class DetallePartida extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "juegoId";
     private static final String ARG_PARAM2 = "modoId";
     private static final String ARG_PARAM3 = "isSinglePlayer";
+
+
+    private static final String MAPA = "mapa";
+
 
     // TODO: Rename and change types of parameters
     private int mParam1;
@@ -183,16 +187,9 @@ public class DetallePartida extends Fragment implements DialogAñadir.OnDialogIn
                     informe.setIdMapa(adaptadorMapa.getItem(position).getId());
                 } else if (adaptadorMapa.getItem(position).getId() == -1) {// marca de id para añadir un nuevo mapa...
                     //mostrar una vista parcial en la que se añada el nombre del mapa.
-                    DialogFragment añadir = DialogAñadir.newInstance("mapa");
+                    DialogFragment añadir = DialogAñadir.newInstance(MAPA);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(),"dialog");
-                    if(nombre != null) {
-                        mListener.newMapa(nombre,mParam1);
-                        nombre = null;
-                        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
-                        mapas.setAdapter(adaptadorMapa);
-                        adaptadorMapa.notifyDataSetChanged();
-                    }
                 }
             }
 
@@ -262,7 +259,6 @@ public class DetallePartida extends Fragment implements DialogAñadir.OnDialogIn
     public void onAttach(Context context) {
         super.onAttach(context);
         actualContext = context;
-        this.actualContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -275,11 +271,6 @@ public class DetallePartida extends Fragment implements DialogAñadir.OnDialogIn
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void sendNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     /**
@@ -296,6 +287,5 @@ public class DetallePartida extends Fragment implements DialogAñadir.OnDialogIn
         public void guardarDatos(Partida informe);
         public void faltanDatos(Partida aTostar);
         public List<DatosSpiner> getMapas(int idJuegos);
-        public void newMapa(String nombre, int idJuegos);
     }
 }
