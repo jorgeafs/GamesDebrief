@@ -49,8 +49,7 @@ public class DialogAñadir extends DialogFragment {
             titulo = getArguments().getString(TITULO);
         }
     }
-
-    @Nullable
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog,container,false);
