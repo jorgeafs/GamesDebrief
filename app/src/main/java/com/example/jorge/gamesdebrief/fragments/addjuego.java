@@ -53,6 +53,7 @@ public class Addjuego extends Fragment {
     private MultiAdaptador adaptadorGenero;
     private MultiAdaptador adaptadorModo;
     private MultiAdaptador adaptadorMapa;
+    private AdaptadorGridDosColumn adaptadorGrid;
 
     private OnFragmentInteractionListener mListener;
 
@@ -96,8 +97,13 @@ public class Addjuego extends Fragment {
         preparaModo(view,inflater);
         preparaMapa(view, inflater);
         preparaButton(view);
-
+        preparaGrid(view, inflater);
         return view;
+    }
+
+    private void preparaGrid(View view, LayoutInflater inflater){
+        grid = (GridView) view.findViewById(R.id.gridView);
+        adaptadorGrid
     }
 
     private void preparaGenero(View view, LayoutInflater inflater) {
@@ -180,7 +186,7 @@ public class Addjuego extends Fragment {
         añadeJuego.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.insertaDatos(nombreJuego.getText().toString(),);
+                mListener.insertaDatos(nombreJuego.getText().toString());
             }
         });
     }
@@ -222,5 +228,6 @@ public class Addjuego extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getDatos(String nombreDato);
+        public void insertaDatos(String ... datos);
     }
 }

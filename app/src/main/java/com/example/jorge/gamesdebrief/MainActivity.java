@@ -195,6 +195,19 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
+    public List<DatosSpiner> getDatos(String nombreDato) {
+        tostar("Esto no esta disponible aun"+nombreDato);
+        List<DatosSpiner> devolver = new ArrayList<>();
+        devolver.add(new DatosSpiner("Hola",0));
+        return devolver;
+    }
+
+    @Override
+    public void insertaDatos(String... datos) {
+        tostar("Hola "+datos[0]);
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }

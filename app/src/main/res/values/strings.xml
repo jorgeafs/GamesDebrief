@@ -28,4 +28,7 @@
     <string name="modo">Modos</string>
     <string name="muestraEstadisticas">Estadisticas</string>
     <string name="mapa">Mapas</string>
+    <string name="partidasPerdidas">Partidas Perdidas</string>
+    <string name="partidasEmpatadas">Partidas Empatadas</string>
+    <string name="partidasGanadas">Partidas Ganadas</string>
 </resources>
