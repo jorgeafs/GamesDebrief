@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.example.jorge.gamesdebrief.R;
@@ -47,13 +48,16 @@ public class Addjuego extends Fragment {
     private Spinner genero;
     private Spinner mapa;
     private Spinner modo;
-    private GridView grid;
+    private ListView añadeModo;
+    private ListView añadeMapa;
     private Button añadeJuego;
     private Context actualContex;
     private MultiAdaptador adaptadorGenero;
     private MultiAdaptador adaptadorModo;
     private MultiAdaptador adaptadorMapa;
-    private AdaptadorGridDosColumn adaptadorGrid;
+    private MultiAdaptador adaptadorListaModo;
+    private MultiAdaptador adaptadorListaMapa;
+
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,16 +98,21 @@ public class Addjuego extends Fragment {
         View view = inflater.inflate(R.layout.fragment_addjuego, container, false);
         nombreJuego = (EditText) view.findViewById(R.id.nombreJuego);
         preparaGenero(view,inflater);
-        preparaModo(view,inflater);
+        preparaModo(view, inflater);
         preparaMapa(view, inflater);
+        preparaListMapa(view, inflater);
+        preparaListaModo(view,inflater);
         preparaButton(view);
         preparaGrid(view, inflater);
         return view;
     }
 
-    private void preparaGrid(View view, LayoutInflater inflater){
-        grid = (GridView) view.findViewById(R.id.gridView);
-        adaptadorGrid
+    private void preparaListaMapa(View view, LayoutInflater inflater) {
+        añadeMapa = (ListView) view.findViewById(R.id.listMapa);
+        adaptadorListaMapa = new MultiAdaptador()
+    }
+
+    private void preparaListaModo(View view, LayoutInflater inflater) {
     }
 
     private void preparaGenero(View view, LayoutInflater inflater) {
@@ -186,7 +195,7 @@ public class Addjuego extends Fragment {
         añadeJuego.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.insertaDatos(nombreJuego.getText().toString());
+                mListener.insertaDatos(nombreJuego.getText().toString(), genero.getSelectedItem(), );
             }
         });
     }
@@ -228,6 +237,6 @@ public class Addjuego extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getDatos(String nombreDato);
-        public void insertaDatos(String ... datos);
+        public void insertaDatos(String nombreJuego, List<DatosSpiner>... datos);
     }
 }

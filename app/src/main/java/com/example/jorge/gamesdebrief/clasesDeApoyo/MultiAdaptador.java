@@ -84,6 +84,10 @@ public class MultiAdaptador extends BaseAdapter {
         return row;
     }
 
+    public List<DatosSpiner> getList() {
+        return myDataSpiner;
+    }
+
     public class ViewHolder {
         private TextView dataName;
 
