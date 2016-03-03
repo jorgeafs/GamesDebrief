@@ -93,7 +93,6 @@ public class MenuJuego extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View menuJuegos = inflater.inflate(R.layout.fragment_menu_juego, container, false);
-
         //preparamos los widgets
         preparaBoton(menuJuegos);
         preparaSwitch(menuJuegos);
@@ -113,9 +112,9 @@ public class MenuJuego extends Fragment {
         modos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (modosAdapter.getItem(position).getId()==0) {
+                if (modosAdapter.getItem(position).getId() == 0) {
                     rellenarPartida.setEnabled(false);
-                } else if(modosAdapter.getItem(position).getId() == -1){
+                } else if (modosAdapter.getItem(position).getId() == -1) {
                     rellenarPartida.setEnabled(false);
                     DialogFragment añadir = DialogAñadir.newInstance(MODO);
                     añadir.setShowsDialog(true);
@@ -143,12 +142,12 @@ public class MenuJuego extends Fragment {
                 if (juegosAdapter.getItem(position).getId() == 0) {
                     List<DatosSpiner> empty = new ArrayList<>(0);
                     empty.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
-                    modosAdapter = new MultiAdaptador(empty, inflater,actualContext);
+                    modosAdapter = new MultiAdaptador(empty, inflater, actualContext);
                     modos.setAdapter(modosAdapter);
                     modosAdapter.notifyDataSetChanged();
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
-                } else if(juegosAdapter.getItem(position).getId() == -1) {
+                } else if (juegosAdapter.getItem(position).getId() == -1) {
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
                     DialogFragment añadir = DialogAñadir.newInstance(JUEGO);
@@ -156,7 +155,7 @@ public class MenuJuego extends Fragment {
                     añadir.show(getFragmentManager(), "dialog");
 
                 } else {
-                    modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner)juegos.getSelectedItem()).getId()),inflater,actualContext);
+                    modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()), inflater, actualContext);
                     modos.setAdapter(modosAdapter);
                     modosAdapter.notifyDataSetChanged();
                     modos.setEnabled(true);
@@ -195,6 +194,17 @@ public class MenuJuego extends Fragment {
         rellenarPartida.setEnabled(false);
     }
 
+    public void actualizaJuego(){
+        juegosAdapter = new MultiAdaptador(mListener.getJuegos(),LayoutInflater.from(actualContext),actualContext);
+        juegos.setAdapter(juegosAdapter);
+        juegosAdapter.notifyDataSetChanged();
+    }
+
+    public void actualizaModo(){
+        modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()),LayoutInflater.from(actualContext),actualContext);
+        modos.setAdapter(modosAdapter);
+        modosAdapter.notifyDataSetChanged();
+    }
 /*    private void botonActivo() {
         if(modos.getSelectedItem() != null){
             DatosSpiner modo = (DatosSpiner)modos.getSelectedItem();

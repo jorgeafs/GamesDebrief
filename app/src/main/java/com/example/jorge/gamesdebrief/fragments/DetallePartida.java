@@ -247,6 +247,12 @@ public class DetallePartida extends Fragment {
         }
     }
 
+    public void actualizaMapa() {
+        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),LayoutInflater.from(actualContext),actualContext);
+        mapas.setAdapter(adaptadorMapa);
+        adaptadorMapa.notifyDataSetChanged();
+    }
+
 
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

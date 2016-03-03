@@ -16,6 +16,7 @@ import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import com.example.jorge.gamesdebrief.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -127,10 +128,6 @@ public class Addjuego extends Fragment {
                     DialogFragment añadir = DialogAñadir.newInstance(GENERO);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
-                } else if (adaptadorGenero.getItem(position).getId() == 0) {
-
-                } else {
-
                 }
             }
 
@@ -152,10 +149,9 @@ public class Addjuego extends Fragment {
                     DialogFragment añadir = DialogAñadir.newInstance(MODO);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
-                } else if (adaptadorModo.getItem(position).getId() == 0) {
-
-                } else {
-
+                } else if (adaptadorModo.getItem(position).getId() > 0) {
+                    adaptadorListaModo.getList().add(adaptadorModo.getItem(position));
+                    adaptadorListaModo.notifyDataSetChanged();
                 }
             }
 
@@ -177,10 +173,9 @@ public class Addjuego extends Fragment {
                     DialogFragment añadir = DialogAñadir.newInstance(MAPA);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
-                } else if (adaptadorMapa.getItem(position).getId() == 0) {
-
-                } else {
-
+                } else if (adaptadorMapa.getItem(position).getId() > 0) {
+                    adaptadorListaMapa.getList().add(adaptadorMapa.getItem(position));
+                    adaptadorListaMapa.notifyDataSetChanged();
                 }
             }
 
@@ -197,11 +192,40 @@ public class Addjuego extends Fragment {
             @Override
             public void onClick(View v) {
                 String juego = nombreJuego.getText().toString();
-                DatosSpiner generoJuego = (DatosSpiner)genero.getSelectedItem();
-                mListener.insertaDatos(juego,generoJuego,adaptadorListaMapa.getList(),adaptadorListaModo.getList());
+                DatosSpiner vacio = new DatosSpiner(" ",-1);
+                List<DatosSpiner> mapasAdd = new ArrayList<DatosSpiner>();
+                mapasAdd.add(vacio);
+                List<DatosSpiner> modosAdd = new ArrayList<DatosSpiner>();
+                modosAdd.add(vacio);
+                if (genero.getSelectedItemPosition()>0) {
+                    DatosSpiner generoJuego = (DatosSpiner) genero.getSelectedItem();
+                    if(adaptadorListaMapa.getList().size()>0){
+                        mapasAdd = adaptadorListaMapa.getList();
+                    }
+                    if(adaptadorListaModo.getList().size()>0){
+                        modosAdd = adaptadorListaModo.getList();
+                    }
+
+                    mListener.insertaDatos(juego, generoJuego, mapasAdd , modosAdd);
+                }else {
+                    mListener.tostar("Se necesita un genero");
+                }
             }
         });
     }
+
+    public void actualizaGenero(){
+        adaptadorGenero = new MultiAdaptador(mListener.getDatos(GENERO),LayoutInflater.from(actualContex),actualContex);
+        genero.setAdapter(adaptadorGenero);
+        adaptadorGenero.notifyDataSetChanged();
+    }
+
+    public void actualizaMapa(){
+        adaptadorMapa = new MultiAdaptador(mListener.getDatos(MAPA),LayoutInflater.from(actualContex),actualContex);
+        mapa.setAdapter(adaptadorGenero);
+        adaptadorMapa.notifyDataSetChanged();
+    }
+
 
 /*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -241,5 +265,6 @@ public class Addjuego extends Fragment {
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getDatos(String nombreDato);
         public void insertaDatos(String nombreJuego, DatosSpiner nombreGenero, List<DatosSpiner>... datos);
+        public void tostar(String frase);
     }
 }
