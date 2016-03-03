@@ -203,8 +203,8 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
-    public void insertaDatos(String... datos) {
-        tostar("Hola "+datos[0]);
+    public void insertaDatos(String nombreJuego, List<DatosSpiner>... datos) {
+        tostar("Hola "+nombreJuego);
     }
 
     @Override

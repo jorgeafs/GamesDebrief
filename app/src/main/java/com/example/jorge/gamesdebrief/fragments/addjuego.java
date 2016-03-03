@@ -2,7 +2,6 @@ package com.example.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,13 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Spinner;
-
-import com.example.jorge.gamesdebrief.R;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+import com.example.jorge.gamesdebrief.R;
 
 import java.util.List;
 
@@ -100,19 +97,23 @@ public class Addjuego extends Fragment {
         preparaGenero(view,inflater);
         preparaModo(view, inflater);
         preparaMapa(view, inflater);
-        preparaListMapa(view, inflater);
+        preparaListaMapa(view, inflater);
         preparaListaModo(view,inflater);
         preparaButton(view);
-        preparaGrid(view, inflater);
+
         return view;
     }
 
     private void preparaListaMapa(View view, LayoutInflater inflater) {
         añadeMapa = (ListView) view.findViewById(R.id.listMapa);
-        adaptadorListaMapa = new MultiAdaptador()
+        adaptadorListaMapa = new MultiAdaptador(mListener.getDatos(MAPA),inflater,actualContex);
+        añadeMapa.setAdapter(adaptadorListaMapa);
     }
 
     private void preparaListaModo(View view, LayoutInflater inflater) {
+        añadeModo = (ListView) view.findViewById(R.id.listModo);
+        adaptadorListaModo = new MultiAdaptador(mListener.getDatos(MODO),inflater,actualContex);
+        añadeModo.setAdapter(adaptadorListaModo);
     }
 
     private void preparaGenero(View view, LayoutInflater inflater) {
@@ -195,7 +196,9 @@ public class Addjuego extends Fragment {
         añadeJuego.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.insertaDatos(nombreJuego.getText().toString(), genero.getSelectedItem(), );
+                String juego = nombreJuego.getText().toString();
+                DatosSpiner generoJuego = (DatosSpiner)genero.getSelectedItem();
+                mListener.insertaDatos(juego,generoJuego,adaptadorListaMapa.getList(),adaptadorListaModo.getList());
             }
         });
     }
@@ -237,6 +240,6 @@ public class Addjuego extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getDatos(String nombreDato);
-        public void insertaDatos(String nombreJuego, List<DatosSpiner>... datos);
+        public void insertaDatos(String nombreJuego, DatosSpiner nombreGenero, List<DatosSpiner>... datos);
     }
 }
