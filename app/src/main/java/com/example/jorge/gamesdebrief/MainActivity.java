@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import com.example.jorge.gamesdebrief.database.DAL;
 import com.example.jorge.gamesdebrief.fragments.Addjuego;
 import com.example.jorge.gamesdebrief.fragments.DetallePartida;
 import com.example.jorge.gamesdebrief.fragments.DialogAñadir;
@@ -34,6 +35,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     private static final String SELECCIONE_JUEGO = "Seleccione un juego";
     private static final String AÑADA_UN_JUEGO = "Añada un juego nuevo";
     private static final String AÑADA_UN_MODO = "Añada un modo nuevo";
+    private DAL dal;
 
 
     //Variables
@@ -105,8 +107,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     public List<DatosSpiner> getJuegos() {
         List<DatosSpiner> juegos = new ArrayList<>();
         juegos.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
-        juegos.add(new DatosSpiner("Doom", 1));
-        juegos.add(new DatosSpiner(AÑADA_UN_JUEGO, -1));
+        juegos.addAll(new DAL(getApplicationContext()).getJuegos());
         return juegos;
     }
 
@@ -114,8 +115,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     public List<DatosSpiner> getModos(int juegoId) {
         List<DatosSpiner> modos = new ArrayList<>();
         modos.add(new DatosSpiner(SELECCIONE_MODO,0));
-        modos.add(new DatosSpiner("Historia", 1));
-        modos.add(new DatosSpiner("Todos contra todos", 2));
+        modos.addAll(new DAL(getApplicationContext()).getModos(juegoId));
         modos.add(new DatosSpiner(AÑADA_UN_MODO, -1));
         return modos;
     }

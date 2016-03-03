@@ -1,16 +1,18 @@
 package com.example.jorge.gamesdebrief.clasesDeApoyo;
 
+import java.io.Serializable;
+
 /**
  * Created by Jorge on 29/02/2016.
  */
-public class Partida {
-    private int idJuego;
-    private int idModo;
-    private int idMapa;
+public class Partida implements Serializable{
+    private long idJuego;
+    private long idModo;
+    private long idMapa;
     private int numeroJugadoresTotales;
     private int numeroJugadoresAliados;
     private int numeroJugadoresEnemigos;
-    private int resultado;
+    private long resultado;
     private boolean singlePlayer;
     private String descripccion;
 
@@ -26,7 +28,7 @@ public class Partida {
         this.descripccion = null;
     }
 
-    public Partida(int idJuego, int idModo, int idMapa, int numeroJugadoresTotales, int numeroJugadoresAliados, int numeroJugadoresEnemigos, int resultado, boolean singlePlayer, String descripccion) {
+    public Partida(long idJuego, long idModo, long idMapa, int numeroJugadoresTotales, int numeroJugadoresAliados, int numeroJugadoresEnemigos, long resultado, boolean singlePlayer, String descripccion) {
         this.idJuego = idJuego;
         this.idModo = idModo;
         this.idMapa = idMapa;
@@ -38,15 +40,15 @@ public class Partida {
         this.descripccion = descripccion;
     }
 
-    public int getIdJuego() {
+    public long getIdJuego() {
         return idJuego;
     }
 
-    public int getIdModo() {
+    public long getIdModo() {
         return idModo;
     }
 
-    public int getIdMapa() {
+    public long getIdMapa() {
         return idMapa;
     }
 
@@ -62,7 +64,7 @@ public class Partida {
         return numeroJugadoresEnemigos;
     }
 
-    public int getResultado() {
+    public long getResultado() {
         return resultado;
     }
 
@@ -74,15 +76,15 @@ public class Partida {
         return descripccion;
     }
 
-    public void setIdJuego(int idJuego) {
+    public void setIdJuego(long idJuego) {
         this.idJuego = idJuego;
     }
 
-    public void setIdModo(int idModo) {
+    public void setIdModo(long idModo) {
         this.idModo = idModo;
     }
 
-    public void setIdMapa(int idMapa) {
+    public void setIdMapa(long idMapa) {
         this.idMapa = idMapa;
     }
 
@@ -98,7 +100,7 @@ public class Partida {
         this.numeroJugadoresEnemigos = numeroJugadoresEnemigos;
     }
 
-    public void setResultado(int resultado) {
+    public void setResultado(long resultado) {
         this.resultado = resultado;
     }
 

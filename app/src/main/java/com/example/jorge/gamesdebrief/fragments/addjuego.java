@@ -16,7 +16,6 @@ import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import com.example.jorge.gamesdebrief.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -200,22 +199,18 @@ public class Addjuego extends Fragment {
             @Override
             public void onClick(View v) {
                 String juego = nombreJuego.getText().toString();
-                DatosSpiner vacio = new DatosSpiner(" ", -1);
-                List<DatosSpiner> mapasAdd = new ArrayList<DatosSpiner>();
-                mapasAdd.add(vacio);
-                List<DatosSpiner> modosAdd = new ArrayList<DatosSpiner>();
-                modosAdd.add(vacio);
-                if (genero.getSelectedItemPosition() > 0) {
+                if (genero.getSelectedItemPosition() > 0 && adaptadorListaMapa.getList().size() > 0 && adaptadorListaModo.getList().size() > 0) {
                     DatosSpiner generoJuego = (DatosSpiner) genero.getSelectedItem();
-                    if (adaptadorListaMapa.getList().size() > 0) {
-                        mapasAdd = adaptadorListaMapa.getList();
-                    }
-                    if (adaptadorListaModo.getList().size() > 0) {
-                        modosAdd = adaptadorListaModo.getList();
-                    }
-                    mListener.insertaDatos(juego, generoJuego, mapasAdd, modosAdd);
+                    mListener.insertaJuegoCompleto(juego, generoJuego, adaptadorListaMapa.getList(), adaptadorListaModo.getList());
                 } else {
-                    mListener.tostar("Se necesita un genero");
+                    String tostada ="";
+                    if(genero.getSelectedItemPosition()==0)
+                        tostada+="\nSe necesita un genero";
+                    if(adaptadorListaMapa.getList().size() == 0)
+                        tostada+="\nSe necesita al menos un mapa";
+                    if(adaptadorListaModo.getList().size() == 0)
+                        tostada+="\nSe necesita al menos un modo";
+                    mListener.tostar(tostada);
                 }
             }
         });
@@ -277,7 +272,7 @@ public class Addjuego extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getDatos(String nombreDato);
-        public void insertaDatos(String nombreJuego, DatosSpiner nombreGenero, List<DatosSpiner>... datos);
+        public void insertaJuegoCompleto(String nombreJuego, DatosSpiner genero, List<DatosSpiner> mapasAdd, List<DatosSpiner> modosAdd);
         public void tostar(String frase);
     }
 }

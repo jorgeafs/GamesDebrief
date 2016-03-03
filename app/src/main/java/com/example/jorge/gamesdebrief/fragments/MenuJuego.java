@@ -147,14 +147,14 @@ public class MenuJuego extends Fragment {
                     modosAdapter.notifyDataSetChanged();
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
-                } else if (juegosAdapter.getItem(position).getId() == -1) {
+                } /*else if (juegosAdapter.getItem(position).getId() == -1) {
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
                     DialogFragment añadir = DialogAñadir.newInstance(JUEGO);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
 
-                } else {
+                }*/ else if(juegosAdapter.getItem(position).getId()>0) {
                     modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()), inflater, actualContext);
                     modos.setAdapter(modosAdapter);
                     modosAdapter.notifyDataSetChanged();

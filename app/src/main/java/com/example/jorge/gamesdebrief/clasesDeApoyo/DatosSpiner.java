@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class DatosSpiner implements Serializable {
     private String texto;
-    private int id;
+    private long id;
 
     public DatosSpiner() {
         this.texto = null;
@@ -23,7 +23,7 @@ public class DatosSpiner implements Serializable {
         return texto;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class DatosSpiner implements Serializable {
         this.texto = texto;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

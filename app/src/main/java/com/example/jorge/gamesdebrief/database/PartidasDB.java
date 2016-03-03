@@ -8,11 +8,11 @@ import android.provider.BaseColumns;
 public class PartidasDB  {
     private  PartidasDB () {}
 
-    public static final class Tipo implements BaseColumns {
-        private Tipo () {}
-        public static final String TIPO_TABLE_NAME = "table_tipo";
-        public static final String TIPO_ID = "tipo_id";
-        public static final String TIPO_NOMBRE = "tipo_nombre";
+    public static final class Genero implements BaseColumns {
+        private Genero() {}
+        public static final String GENERO_TABLE_NAME = "table_genero";
+        public static final String GENERO_ID = "genero_id";
+        public static final String GENERO_NOMBRE = "genero_nombre";
     }
 
     public static final class Juego implements BaseColumns {
@@ -20,7 +20,7 @@ public class PartidasDB  {
         public static final String JUEGO_TABLE_NAME = "table_juego";
         public static final String JUEGO_ID = "juego_id";
         public static final String JUEGO_NOMBRE = "juego_nombre";
-        public static final String JUEGO_ID_TIPO = "juego_id_tipo";
+        public static final String JUEGO_ID_GENERO = "juego_id_genero";
     }
 
     public static final class ModoPartida implements BaseColumns {
@@ -42,6 +42,7 @@ public class PartidasDB  {
         private Mapa () {}
         public static final String MAPA_TABLE_NAME = "table_mapa";
         public static final String MAPA_ID = "mapa_id";
+        public static final String MAPA_JUEGO_ID = "mapa_juego_id";
         public static final String MAPA_NOMBRE = "mapa_nombre";
     }
 

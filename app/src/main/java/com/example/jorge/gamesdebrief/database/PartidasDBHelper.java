@@ -19,10 +19,10 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //Tabla tipo
-        db.execSQL("CREATE TABLE "+PartidasDB.Tipo.TIPO_TABLE_NAME
+        db.execSQL("CREATE TABLE "+ PartidasDB.Genero.GENERO_TABLE_NAME
                 +" ( "+
-                    PartidasDB.Tipo.TIPO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
-                    +", "+PartidasDB.Tipo.TIPO_NOMBRE+" TEXT "
+                    PartidasDB.Genero.GENERO_ID +" INTEGER PRIMARY KEY AUTOINCREMENT "
+                    +", "+ PartidasDB.Genero.GENERO_NOMBRE +" TEXT "
                 +");");
         //tabla modo partida
         db.execSQL("CREATE TABLE "+ PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME
@@ -30,19 +30,21 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                     PartidasDB.ModoPartida.MODO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
                     +", "+PartidasDB.ModoPartida.MODO_PARTIDA_NOMBRE+" TEXT "
                 +" );");
-        //tabla mapa
-        db.execSQL("CREATE TABLE "+PartidasDB.Mapa.MAPA_TABLE_NAME
-                +" ( "+
-                    PartidasDB.Mapa.MAPA_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
-                    +", "+PartidasDB.Mapa.MAPA_NOMBRE+" TETX "
-                +" );");
         //tabla Juego
         db.execSQL("CREATE TABLE "+PartidasDB.Juego.JUEGO_TABLE_NAME
                 +" ( "+
                     PartidasDB.Juego.JUEGO_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
                     +", "+PartidasDB.Juego.JUEGO_NOMBRE+" TETX "
-                    +", "+PartidasDB.Juego.JUEGO_ID_TIPO+" INTEGER "
-                    +", FOREIGN KEY ( "+ PartidasDB.Juego.JUEGO_ID_TIPO+" ) REFERENCES "+ PartidasDB.Tipo.TIPO_TABLE_NAME+" ( "+ PartidasDB.Tipo.TIPO_ID+" ) "
+                    +", "+PartidasDB.Juego.JUEGO_ID_GENERO +" INTEGER "
+                    +", FOREIGN KEY ( "+ PartidasDB.Juego.JUEGO_ID_GENERO +" ) REFERENCES "+ PartidasDB.Genero.GENERO_TABLE_NAME +" ( "+ PartidasDB.Genero.GENERO_ID +" ) "
+                +" );");
+        //tabla mapa
+        db.execSQL("CREATE TABLE "+PartidasDB.Mapa.MAPA_TABLE_NAME
+                +" ( "+
+                PartidasDB.Mapa.MAPA_ID+" INTEGER PRIMARY KEY AUTOINCREMENT "
+                +", "+PartidasDB.Mapa.MAPA_NOMBRE+" TETX "
+                +", "+PartidasDB.Mapa.MAPA_JUEGO_ID+" INTEGER"
+                +", FOREIGN KEY ( "+ PartidasDB.Mapa.MAPA_JUEGO_ID+" ) REFERENCES "+ PartidasDB.Juego.JUEGO_TABLE_NAME+" ( "+ PartidasDB.Juego.JUEGO_ID+" ) "
                 +" );");
         //tabla partida
         db.execSQL("CREATE TABLE " + PartidasDB.Partida.PARTIDA_TABLE_NAME
@@ -80,7 +82,7 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         android.util.Log.w("Constants", "Upgrading database, which will destroy allold data");
         db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.Mapa.MAPA_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.Tipo.TIPO_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.Genero.GENERO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.Juego.JUEGO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_TABLE_NAME);
