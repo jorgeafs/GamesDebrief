@@ -41,7 +41,8 @@
         android:layout_height="300dp"
         android:layout_below="@id/linearContainer"
         android:layout_alignParentBottom="true"
-        android:layout_margin="20dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -86,21 +87,29 @@
                 android:id="@+id/listaDatos"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="2dp"
                 android:layout_weight="5"/>
             <ListView
                 android:id="@+id/listaPartidasGanadas"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="2dp"
                 android:layout_weight="5"/>
             <ListView
                 android:id="@+id/listaPartidasEmpatadas"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="2dp"
                 android:layout_weight="5"/>
             <ListView
                 android:id="@+id/listaPartidasPerdidas"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:divider="@color/colorPrimaryDark"
+                android:dividerHeight="2dp"
                 android:layout_weight="5"/>
         </LinearLayout>
 </LinearLayout>

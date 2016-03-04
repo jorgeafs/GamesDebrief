@@ -137,10 +137,28 @@ public class Estadisticas extends Fragment {
     }
 
     private void asignaListas(Resultados result) {
-        datos = result.getNombre();
-        ganadas = result.getGanadas();
-        empatadas = result.getEmpatadas();
-        perdidas = result.getPerdidas();
+        datos = new ArrayList<>();
+        ganadas = new ArrayList<>();
+        if(result.getNombre().size()>0) {
+            datos = result.getNombre();
+        }else {
+            datos.add(new DatosSpiner(""+0,-5 ));
+        }
+        if(result.getGanadas().size()>0) {
+            ganadas = result.getGanadas();
+        } else {
+            ganadas.add(new DatosSpiner(""+0,-5 ));
+        }
+        if(result.getEmpatadas().size()>0){
+            empatadas = result.getEmpatadas();
+        } else {
+            empatadas.add(new DatosSpiner(""+0,-5 ));
+        }
+        if(result.getPerdidas().size()>0){
+            perdidas = result.getPerdidas();
+        } else{
+            perdidas.add(new DatosSpiner(""+0,-5 ));
+        }
     }
 
     private void preparaBotonGenero(View view, LayoutInflater inflater){
