@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     private DetallePartida detalle;
     private Addjuego addjuego;
     private Estadisticas estadisticas;
+    private boolean editing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,8 +250,9 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     @Override
     public void insertaJuegoCompleto(String nombreJuego, DatosSpiner genero, List<DatosSpiner> mapasAdd, List<DatosSpiner> modosAdd) {
         new DAL(getApplicationContext()).addJuego(nombreJuego,genero,mapasAdd,modosAdd);
-        if(menuJuego.isEditing()){
-            menuJuego.actualizaJuego();
+        if(editing){
+            limpiaBackStack(getFragmentManager());
+            eligeJuego();
         }
     }
 
@@ -279,7 +281,8 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
-    public void añadeJuegoMenuJuego() {
+    public void añadeJuegoMenuJuego(boolean editando) {
+        this.editing = editando;
         añadeJuego();
     }
 }

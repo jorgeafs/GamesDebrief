@@ -152,8 +152,8 @@ public class MenuJuego extends Fragment {
                 } else if (juegosAdapter.getItem(position).getId() == -1) {
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
-                    mListener.añadeJuegoMenuJuego();
                     editing = true;
+                    mListener.añadeJuegoMenuJuego(editing);
                     /*
                     DialogFragment añadir = DialogAñadir.newInstance(JUEGO);
                     añadir.setShowsDialog(true);
@@ -261,6 +261,6 @@ public class MenuJuego extends Fragment {
         public List<DatosSpiner> getJuegos();
         public List<DatosSpiner> getModos(long juegoId);
         public void lanzaInforme(long juegoId, long modoId, boolean isSinglePlayer);
-        public void añadeJuegoMenuJuego();
+        public void añadeJuegoMenuJuego(boolean editando);
     }
 }

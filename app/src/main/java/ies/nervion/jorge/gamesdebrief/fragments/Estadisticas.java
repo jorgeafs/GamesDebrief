@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jorge.gamesdebrief.R;
 
@@ -17,6 +18,7 @@ import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +52,10 @@ public class Estadisticas extends Fragment {
     private MultiAdaptador adaptadorGanada;
     private MultiAdaptador adaptadorEmpatada;
     private MultiAdaptador adaptadorPerdida;
+    private List<DatosSpiner> datos = new ArrayList<>();
+    private List<DatosSpiner> ganadas = new ArrayList<>();
+    private List<DatosSpiner> empatadas = new ArrayList<>();
+    private List<DatosSpiner> perdidas = new ArrayList<>();
     private Context actualContext;
     private OnFragmentInteractionListener mListener;
 
@@ -90,13 +96,13 @@ public class Estadisticas extends Fragment {
         View view = inflater.inflate(R.layout.fragment_estadisticas, container, false);
         tipoDato = (TextView) view.findViewById(R.id.tipoDato);
         tipoDato.setText("Pulse un boton");
-        preparaBotonJuego(view, inflater);
-        preparaBotonGenero(view, inflater);
-        preparaBotonModo(view, inflater);
         preparaListaDato(view, inflater);
         preparaListaGanada(view, inflater);
         preparaListaEmpatada(view, inflater);
         preparaListaPerdida(view, inflater);
+        preparaBotonJuego(view, inflater);
+        preparaBotonGenero(view, inflater);
+        preparaBotonModo(view, inflater);
         return view;
     }
 
@@ -106,17 +112,35 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticaJuegos();
+                asignaListas(result);
                 tipoDato.setText(JUEGO);
-                adaptadorDatos = new MultiAdaptador(result.getNombre(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorGanada = new MultiAdaptador(result.getGanadas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorDatos.notifyDataSetChanged();
-                adaptadorGanada.notifyDataSetChanged();
-                adaptadorEmpatada.notifyDataSetChanged();
-                adaptadorPerdida.notifyDataSetChanged();
+                resetearListas();
+                //Toast tostada = new Toast(actualContext);
+                //tostada.makeText(actualContext, "NO FURRULA, ¿verdad?", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void resetearListas() {
+        adaptadorDatos.getList().clear();
+        adaptadorDatos.getList().addAll(datos);
+        adaptadorDatos.notifyDataSetChanged();
+        adaptadorEmpatada.getList().clear();
+        adaptadorEmpatada.getList().addAll(empatadas);
+        adaptadorEmpatada.notifyDataSetChanged();
+        adaptadorGanada.getList().clear();
+        adaptadorGanada.getList().addAll(ganadas);
+        adaptadorGanada.notifyDataSetChanged();
+        adaptadorPerdida.getList().clear();
+        adaptadorPerdida.getList().addAll(perdidas);
+        adaptadorPerdida.notifyDataSetChanged();
+    }
+
+    private void asignaListas(Resultados result) {
+        datos = result.getNombre();
+        ganadas = result.getGanadas();
+        empatadas = result.getEmpatadas();
+        perdidas = result.getPerdidas();
     }
 
     private void preparaBotonGenero(View view, LayoutInflater inflater){
@@ -125,15 +149,9 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasGenero();
+                asignaListas(result);
                 tipoDato.setText(GENERO);
-                adaptadorDatos = new MultiAdaptador(result.getNombre(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorGanada = new MultiAdaptador(result.getGanadas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(),LayoutInflater.from(actualContext),actualContext);
-                adaptadorDatos.notifyDataSetChanged();
-                adaptadorGanada.notifyDataSetChanged();
-                adaptadorEmpatada.notifyDataSetChanged();
-                adaptadorPerdida.notifyDataSetChanged();
+                resetearListas();
             }
         });
     }
@@ -144,40 +162,34 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasModo();
-                tipoDato.setText(GENERO);
-                adaptadorDatos = new MultiAdaptador(result.getNombre(), LayoutInflater.from(actualContext), actualContext);
-                adaptadorGanada = new MultiAdaptador(result.getGanadas(), LayoutInflater.from(actualContext), actualContext);
-                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(), LayoutInflater.from(actualContext), actualContext);
-                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(), LayoutInflater.from(actualContext), actualContext);
-                adaptadorDatos.notifyDataSetChanged();
-                adaptadorGanada.notifyDataSetChanged();
-                adaptadorEmpatada.notifyDataSetChanged();
-                adaptadorPerdida.notifyDataSetChanged();
+                asignaListas(result);
+                tipoDato.setText(MODO);
+                resetearListas();
             }
         });
     }
 
     private void preparaListaDato(View view, LayoutInflater inflater){
         listaDato = (ListView) view.findViewById(R.id.listaDatos);
-        adaptadorDatos = new MultiAdaptador(new ArrayList<DatosSpiner>(), inflater, actualContext);
+        adaptadorDatos = new MultiAdaptador(datos, inflater, actualContext);
         listaDato.setAdapter(adaptadorDatos);
     }
 
     private void preparaListaGanada(View view, LayoutInflater inflater){
         listaGanada = (ListView) view.findViewById(R.id.listaPartidasGanadas);
-        adaptadorGanada = new MultiAdaptador(new ArrayList<DatosSpiner>(),inflater,actualContext);
+        adaptadorGanada = new MultiAdaptador(ganadas,inflater,actualContext);
         listaGanada.setAdapter(adaptadorGanada);
     }
 
     private void preparaListaEmpatada(View view, LayoutInflater inflater){
         listaEmpatada = (ListView) view.findViewById(R.id.listaPartidasEmpatadas);
-        adaptadorEmpatada = new MultiAdaptador(new ArrayList<DatosSpiner>(),inflater,actualContext);
+        adaptadorEmpatada = new MultiAdaptador(empatadas,inflater,actualContext);
         listaEmpatada.setAdapter(adaptadorEmpatada);
     }
 
     private void preparaListaPerdida(View view, LayoutInflater inflater){
         listaPerdida = (ListView) view.findViewById(R.id.listaPartidasPerdidas);
-        adaptadorPerdida = new MultiAdaptador(new ArrayList<DatosSpiner>(),inflater,actualContext);
+        adaptadorPerdida = new MultiAdaptador(perdidas,inflater,actualContext);
         listaPerdida.setAdapter(adaptadorPerdida);
     }
 

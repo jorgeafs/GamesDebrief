@@ -64,7 +64,9 @@ public class Addjuego extends Fragment {
     private List<DatosSpiner> datosGenero= new ArrayList<>();
     private List<DatosSpiner> datosModo = new ArrayList<>();
     private List<DatosSpiner> datosMapa = new ArrayList<>();
-    private List<DatosSpiner> vacio = new ArrayList<>();
+    private List<DatosSpiner> listaMapas = new ArrayList<>();
+    private List<DatosSpiner> listaModos = new ArrayList<>();
+    private DatosSpiner ultimoMapa = new DatosSpiner(AÑADA_UN_MAPA,-1);
 
 
     private OnFragmentInteractionListener mListener;
@@ -116,13 +118,13 @@ public class Addjuego extends Fragment {
 
     private void preparaListaMapa(View view, LayoutInflater inflater) {
         añadeMapa = (ListView) view.findViewById(R.id.listMapa);
-        adaptadorListaMapa = new MultiAdaptador(vacio,inflater,actualContex);
+        adaptadorListaMapa = new MultiAdaptador(listaMapas,inflater,actualContex);
         añadeMapa.setAdapter(adaptadorListaMapa);
     }
 
     private void preparaListaModo(View view, LayoutInflater inflater) {
         añadeModo = (ListView) view.findViewById(R.id.listModo);
-        adaptadorListaModo = new MultiAdaptador(vacio,inflater,actualContex);
+        adaptadorListaModo = new MultiAdaptador(listaModos,inflater,actualContex);
         añadeModo.setAdapter(adaptadorListaModo);
     }
 
@@ -188,7 +190,7 @@ public class Addjuego extends Fragment {
         datosMapa.clear();
         datosMapa.add(new DatosSpiner(SELECCIONE_MAPA,0));
         datosMapa.addAll(mListener.getDatos(MAPA));
-        datosMapa.add(new DatosSpiner(AÑADA_UN_MAPA,-1));
+        datosMapa.add(ultimoMapa);
         adaptadorMapa = new MultiAdaptador(datosMapa,inflater,actualContex);
         mapa.setAdapter(adaptadorMapa);
         mapa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -198,7 +200,7 @@ public class Addjuego extends Fragment {
                     DialogFragment añadir = DialogAñadir.newInstance(MAPA, -2);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
-                } else if (adaptadorMapa.getItem(position).getId() > 0) {
+                } else if (adaptadorMapa.getItem(position).getId()>0 ||adaptadorMapa.getItem(position).getId() == -2 ) {
                     if(!adaptadorListaMapa.getList().contains(adaptadorMapa.getItem(position))) {
                         adaptadorListaMapa.getList().add(adaptadorMapa.getItem(position));
                     } else {
@@ -251,11 +253,11 @@ public class Addjuego extends Fragment {
     }
 
     public void actualizaMapa(String nombre){
-        DatosSpiner nuevoMapa = new DatosSpiner(nombre,-2), ultima = new DatosSpiner(AÑADA_UN_MAPA,-1);
+        DatosSpiner nuevoMapa = new DatosSpiner(nombre,-2);
         datosMapa = adaptadorMapa.getList();
-        datosMapa.remove(ultima);
+        datosMapa.remove(ultimoMapa);
         datosMapa.add(nuevoMapa);
-        datosMapa.add(ultima);
+        datosMapa.add(ultimoMapa);
         adaptadorMapa = new MultiAdaptador(datosMapa,LayoutInflater.from(actualContex),actualContex);
         mapa.setAdapter(adaptadorMapa);
         adaptadorMapa.notifyDataSetChanged();
