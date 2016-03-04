@@ -98,7 +98,7 @@ public class MenuPrincipal extends Fragment {
         return principalView;
     }
 
-/*   
+/*
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
