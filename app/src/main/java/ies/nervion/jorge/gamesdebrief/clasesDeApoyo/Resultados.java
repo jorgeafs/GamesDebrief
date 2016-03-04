@@ -1,6 +1,4 @@
-package com.example.jorge.gamesdebrief.clasesDeApoyo;
-
-import org.w3c.dom.ls.LSInput;
+package ies.nervion.jorge.gamesdebrief.clasesDeApoyo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

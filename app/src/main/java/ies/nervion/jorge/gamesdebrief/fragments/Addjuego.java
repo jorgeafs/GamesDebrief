@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.fragments;
+package ies.nervion.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -12,9 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+
 import com.example.jorge.gamesdebrief.R;
+
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,12 @@ public class Addjuego extends Fragment {
     private static final String GENERO = "genero";
     private static final String MODO = "modo";
     private static final String MAPA = "mapa";
+    private static final String SELECCIONE_MODO = "Seleccione un modo";
+    private static final String SELECCIONE_JUEGO = "Seleccione un juego";
+    private static final String SELECCIONE_MAPA = "Seleccione un mapa";
+    private static final String AÑADA_UN_JUEGO = "Añada un juego nuevo";
+    private static final String AÑADA_UN_MODO = "Añada un modo nuevo";
+    private static final String AÑADA_UN_MAPA = "Añada un napa nuevo";
 
     private String mParam1;
     private String mParam2;
@@ -53,6 +61,9 @@ public class Addjuego extends Fragment {
     private MultiAdaptador adaptadorMapa;
     private MultiAdaptador adaptadorListaModo;
     private MultiAdaptador adaptadorListaMapa;
+    private List<DatosSpiner> datosGenero= new ArrayList<>();
+    private List<DatosSpiner> datosModo = new ArrayList<>();
+    private List<DatosSpiner> datosMapa = new ArrayList<>();
     private List<DatosSpiner> vacio = new ArrayList<>();
 
 
@@ -117,7 +128,11 @@ public class Addjuego extends Fragment {
 
     private void preparaGenero(View view, LayoutInflater inflater) {
         genero = (Spinner) view.findViewById(R.id.genero);
-        adaptadorGenero = new MultiAdaptador(mListener.getDatos(GENERO),inflater,actualContex);
+        datosGenero.clear();
+        datosGenero.add(new DatosSpiner("Seleccione un genero",0));
+        datosGenero.addAll(mListener.getDatos(GENERO));
+        datosGenero.add(new DatosSpiner("Añada un genero",-1));
+        adaptadorGenero = new MultiAdaptador(datosGenero,inflater,actualContex);
         genero.setAdapter(adaptadorGenero);
         genero.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -138,7 +153,11 @@ public class Addjuego extends Fragment {
 
     private void preparaModo(View view, LayoutInflater inflater){
         modo = (Spinner) view.findViewById(R.id.nuevoModo);
-        adaptadorModo = new MultiAdaptador(mListener.getDatos(MODO),inflater,actualContex);
+        datosModo.clear();
+        datosModo.add(new DatosSpiner(SELECCIONE_MODO,0));
+        datosModo.addAll(mListener.getDatos(MODO));
+        datosModo.add(new DatosSpiner(AÑADA_UN_MODO,-1));
+        adaptadorModo = new MultiAdaptador(datosModo,inflater,actualContex);
         modo.setAdapter(adaptadorModo);
         modo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -166,7 +185,11 @@ public class Addjuego extends Fragment {
 
     private void preparaMapa(View view, LayoutInflater inflater){
         mapa = (Spinner) view.findViewById(R.id.nuevoMapa);
-        adaptadorMapa = new MultiAdaptador(mListener.getDatos(MAPA),inflater,actualContex);
+        datosMapa.clear();
+        datosMapa.add(new DatosSpiner(SELECCIONE_MAPA,0));
+        datosMapa.addAll(mListener.getDatos(MAPA));
+        datosMapa.add(new DatosSpiner(AÑADA_UN_MAPA,-1));
+        adaptadorMapa = new MultiAdaptador(datosMapa,inflater,actualContex);
         mapa.setAdapter(adaptadorMapa);
         mapa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -203,6 +226,8 @@ public class Addjuego extends Fragment {
                     mListener.insertaJuegoCompleto(juego, generoJuego, adaptadorListaMapa.getList(), adaptadorListaModo.getList());
                 } else {
                     String tostada ="";
+                    if(juego.isEmpty() && juego != null)
+                        tostada+="\nSe necesita un nombre para el juego";
                     if(genero.getSelectedItemPosition()==0)
                         tostada+="\nSe necesita un genero";
                     if(adaptadorListaMapa.getList().size() == 0)
@@ -216,22 +241,32 @@ public class Addjuego extends Fragment {
     }
 
     public void actualizaGenero(){
-        adaptadorGenero = new MultiAdaptador(mListener.getDatos(GENERO), LayoutInflater.from(actualContex),actualContex);
+        datosGenero.clear();
+        datosGenero.add(new DatosSpiner("Seleccione un genero",0));
+        datosGenero.addAll(mListener.getDatos(GENERO));
+        datosGenero.add(new DatosSpiner("Añada un genero",-1));
+        adaptadorGenero = new MultiAdaptador(datosGenero, LayoutInflater.from(actualContex),actualContex);
         genero.setAdapter(adaptadorGenero);
         adaptadorGenero.notifyDataSetChanged();
     }
 
     public void actualizaMapa(String nombre){
-        DatosSpiner nuevoMapa = new DatosSpiner(nombre,-2);
-        List<DatosSpiner> old = adaptadorMapa.getList();
-        old.add(nuevoMapa);
-        adaptadorMapa = new MultiAdaptador(old,LayoutInflater.from(actualContex),actualContex);
+        DatosSpiner nuevoMapa = new DatosSpiner(nombre,-2), ultima = new DatosSpiner(AÑADA_UN_MAPA,-1);
+        datosMapa = adaptadorMapa.getList();
+        datosMapa.remove(ultima);
+        datosMapa.add(nuevoMapa);
+        datosMapa.add(ultima);
+        adaptadorMapa = new MultiAdaptador(datosMapa,LayoutInflater.from(actualContex),actualContex);
         mapa.setAdapter(adaptadorMapa);
         adaptadorMapa.notifyDataSetChanged();
     }
 
     public void actualizaModo() {
-        adaptadorModo = new MultiAdaptador(mListener.getDatos(MODO),LayoutInflater.from(actualContex),actualContex);
+        datosModo.clear();
+        datosModo.add(new DatosSpiner(SELECCIONE_MODO,0));
+        datosModo.addAll(mListener.getDatos(MODO));
+        datosModo.add(new DatosSpiner(AÑADA_UN_MODO,-1));
+        adaptadorModo = new MultiAdaptador(datosModo,LayoutInflater.from(actualContex),actualContex);
         modo.setAdapter(adaptadorModo);
         adaptadorModo.notifyDataSetChanged();
     }

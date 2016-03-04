@@ -1,12 +1,12 @@
-package com.example.jorge.gamesdebrief.database;
+package ies.nervion.jorge.gamesdebrief.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Resultados;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -144,8 +144,8 @@ public class DAL implements Serializable {
         generos = new ArrayList<>();
         if(cursor.moveToFirst()){
             do {
-                generos.add(new DatosSpiner(cursor.getString(cursor.getColumnIndex(PartidasDB.Mapa.MAPA_NOMBRE)),
-                        cursor.getInt(cursor.getColumnIndex(PartidasDB.Mapa.MAPA_ID))));
+                generos.add(new DatosSpiner(cursor.getString(cursor.getColumnIndex(PartidasDB.Genero.GENERO_NOMBRE)),
+                        cursor.getInt(cursor.getColumnIndex(PartidasDB.Genero.GENERO_ID))));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -245,7 +245,7 @@ public class DAL implements Serializable {
                     //Having
                     , null
                     //OrderBy
-                    , PartidasDB.ModoPartida.MODO_ID + " ASC "
+                    , PartidasDB.Mapa.MAPA_ID + " ASC "
             );
             if (cursor.moveToFirst()) {
                 do {

@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.clasesDeApoyo;
+package ies.nervion.jorge.gamesdebrief.clasesDeApoyo;
 
 import java.io.Serializable;
 

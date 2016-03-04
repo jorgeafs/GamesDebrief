@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief;
+package ies.nervion.jorge.gamesdebrief;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

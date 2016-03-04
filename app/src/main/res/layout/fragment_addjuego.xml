@@ -3,7 +3,7 @@
     android:id="@+id/addJuego"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.Addjuego">
+    tools:context="ies.nervion.jorge.gamesdebrief.fragments.Addjuego">
     <TextView
         android:id="@+id/nombreJuegoLabel"
         android:layout_width="wrap_content"

@@ -1,22 +1,23 @@
-package com.example.jorge.gamesdebrief;
+package ies.nervion.jorge.gamesdebrief;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Resultados;
-import com.example.jorge.gamesdebrief.database.DAL;
-import com.example.jorge.gamesdebrief.fragments.Addjuego;
-import com.example.jorge.gamesdebrief.fragments.DetallePartida;
-import com.example.jorge.gamesdebrief.fragments.DialogAñadir;
-import com.example.jorge.gamesdebrief.fragments.Estadisticas;
-import com.example.jorge.gamesdebrief.fragments.MenuJuego;
-import com.example.jorge.gamesdebrief.fragments.MenuPrincipal;
+import com.example.jorge.gamesdebrief.R;
+
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Resultados;
+import ies.nervion.jorge.gamesdebrief.database.DAL;
+import ies.nervion.jorge.gamesdebrief.fragments.Addjuego;
+import ies.nervion.jorge.gamesdebrief.fragments.DetallePartida;
+import ies.nervion.jorge.gamesdebrief.fragments.DialogAñadir;
+import ies.nervion.jorge.gamesdebrief.fragments.Estadisticas;
+import ies.nervion.jorge.gamesdebrief.fragments.MenuJuego;
+import ies.nervion.jorge.gamesdebrief.fragments.MenuPrincipal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,8 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         if (findViewById(R.id.singleContainer)!= null && savedInstanceState == null){
             //primera carga de la app con el movil en posicion vertical y sin ningun dato salvado
@@ -113,6 +116,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
         List<DatosSpiner> juegos = new ArrayList<>();
         juegos.add(new DatosSpiner(SELECCIONE_JUEGO, 0));
         juegos.addAll(new DAL(getApplicationContext()).getJuegos());
+        juegos.add(new DatosSpiner(AÑADA_UN_JUEGO, -1));
         return juegos;
     }
 
@@ -190,7 +194,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
         long id;
         switch (nombreDato) {
             case MAPA:
-                if(identityJuego!=-2){
+                if(identityJuego >0 ){
                     new DAL(getApplicationContext()).addMapa(identityJuego,dato);
                     detalle.actualizaMapa();
                 }else{
@@ -198,7 +202,7 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
                 }
                 break;
             case MODO:
-                if(identityJuego!= -2) {
+                if(identityJuego> 0) {
                     conseguido = new DAL(getApplicationContext()).addModo(identityJuego, dato);
                     if (!conseguido) {
                         tostadora("No se pudo añadir el modo " + dato);
@@ -245,6 +249,9 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     @Override
     public void insertaJuegoCompleto(String nombreJuego, DatosSpiner genero, List<DatosSpiner> mapasAdd, List<DatosSpiner> modosAdd) {
         new DAL(getApplicationContext()).addJuego(nombreJuego,genero,mapasAdd,modosAdd);
+        if(menuJuego.isEditing()){
+            menuJuego.actualizaJuego();
+        }
     }
 
     @Override
@@ -269,5 +276,10 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     public Resultados estadisticasModo() {
         Resultados resultados = new DAL(getApplicationContext()).resultadosPorModos();
         return resultados;
+    }
+
+    @Override
+    public void añadeJuegoMenuJuego() {
+        añadeJuego();
     }
 }

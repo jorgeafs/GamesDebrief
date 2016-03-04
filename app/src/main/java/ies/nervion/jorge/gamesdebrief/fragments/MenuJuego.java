@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.fragments;
+package ies.nervion.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -13,9 +13,10 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import com.example.jorge.gamesdebrief.R;
+
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,9 @@ public class MenuJuego extends Fragment {
     private Context actualContext;
     private MultiAdaptador modosAdapter;
     private MultiAdaptador juegosAdapter;
+    private boolean editing;
+
+    public boolean isEditing(){return editing;}
 
     public MenuJuego() {
         // Required empty public constructor
@@ -90,6 +94,7 @@ public class MenuJuego extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View menuJuegos = inflater.inflate(R.layout.fragment_menu_juego, container, false);
+        editing = false;
         //preparamos los widgets
         preparaBoton(menuJuegos);
         preparaSwitch(menuJuegos);
@@ -144,14 +149,17 @@ public class MenuJuego extends Fragment {
                     modosAdapter.notifyDataSetChanged();
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
-                } /*else if (juegosAdapter.getItem(position).getId() == -1) {
+                } else if (juegosAdapter.getItem(position).getId() == -1) {
                     modos.setEnabled(false);
                     esUnSoloJugador.setEnabled(false);
+                    mListener.añadeJuegoMenuJuego();
+                    editing = true;
+                    /*
                     DialogFragment añadir = DialogAñadir.newInstance(JUEGO);
                     añadir.setShowsDialog(true);
-                    añadir.show(getFragmentManager(), "dialog");
+                    añadir.show(getFragmentManager(), "dialog");*/
 
-                }*/ else if(juegosAdapter.getItem(position).getId()>0) {
+                } else if(juegosAdapter.getItem(position).getId()>0) {
                     modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()), inflater, actualContext);
                     modos.setAdapter(modosAdapter);
                     modosAdapter.notifyDataSetChanged();
@@ -195,6 +203,7 @@ public class MenuJuego extends Fragment {
         juegosAdapter = new MultiAdaptador(mListener.getJuegos(),LayoutInflater.from(actualContext),actualContext);
         juegos.setAdapter(juegosAdapter);
         juegosAdapter.notifyDataSetChanged();
+        editing = false;
     }
 
     public void actualizaModo(){
@@ -252,5 +261,6 @@ public class MenuJuego extends Fragment {
         public List<DatosSpiner> getJuegos();
         public List<DatosSpiner> getModos(long juegoId);
         public void lanzaInforme(long juegoId, long modoId, boolean isSinglePlayer);
+        public void añadeJuegoMenuJuego();
     }
 }

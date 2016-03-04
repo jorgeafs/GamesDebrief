@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.database;
+package ies.nervion.jorge.gamesdebrief.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -62,13 +62,10 @@ public class PartidasDBHelper extends SQLiteOpenHelper {
                 + " , FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_JUEGO + " ) REFERENCES " + PartidasDB.Juego.JUEGO_TABLE_NAME + " ( " + PartidasDB.Juego.JUEGO_ID + " ) "
                 + " , FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MAPA + " ) REFERENCES " + PartidasDB.Mapa.MAPA_TABLE_NAME + " ( " + PartidasDB.Mapa.MAPA_ID + " ) "
                 + " , FOREIGN KEY ( " + PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA + " ) REFERENCES " + PartidasDB.ModoPartida.MODO_PARTIDA_TABLE_NAME + " ( " + PartidasDB.ModoPartida.MODO_ID + " ) "
-               + " );");
-/* Codigo que creo que esta dandome el error, va de detras de las foreign keys
-        + " , CHECK ( " + PartidasDB.Partida.JUEGO_IS_SINGLE_PLAYER +" IN (0 , 1))"
-                + " , CHECK ( " + PartidasDB.Partida.PARTIDA_RESULTADO + " IN (1 , 2 , 3)"//1=GANADA,2=EMPATADA,3=PERDIDA
-                + " , CHECK ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES + " == ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ALIADOS + " + " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ENEMIGOS + " ) "
-*/
-
+                + " , CHECK ( " + PartidasDB.Partida.JUEGO_IS_SINGLE_PLAYER +" IN (0 , 1))"
+                + " , CHECK ( " + PartidasDB.Partida.PARTIDA_RESULTADO + " IN (1 , 2 , 3))"//1=GANADA,2=EMPATADA,3=PERDIDA
+                + " , CHECK ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES + " == ( " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ALIADOS + " + " + PartidasDB.Partida.PARTIDA_NUMERO_JUGADORES_ENEMIGOS + " )) "
+                + " );");
 
         //tabla juego modo partida
         db.execSQL("CREATE TABLE " + PartidasDB.JuegoModoPartida.JUEGO_MODO_PARTIDA_TABLE_NAME

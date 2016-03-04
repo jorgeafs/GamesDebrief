@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.fragments;
+package ies.nervion.jorge.gamesdebrief.fragments;
 
 import android.content.Context;
 import android.os.Bundle;

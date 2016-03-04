@@ -1,4 +1,4 @@
-package com.example.jorge.gamesdebrief.fragments;
+package ies.nervion.jorge.gamesdebrief.fragments;
 
 import android.app.DialogFragment;
 import android.content.Context;
@@ -16,10 +16,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
 import com.example.jorge.gamesdebrief.R;
+
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Partida;
 
 import java.util.ArrayList;
 import java.util.List;

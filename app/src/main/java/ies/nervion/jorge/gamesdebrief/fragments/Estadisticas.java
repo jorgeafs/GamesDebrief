@@ -1,7 +1,6 @@
-package com.example.jorge.gamesdebrief.fragments;
+package ies.nervion.jorge.gamesdebrief.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +11,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.jorge.gamesdebrief.R;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
-import com.example.jorge.gamesdebrief.clasesDeApoyo.Resultados;
+
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,6 +89,7 @@ public class Estadisticas extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_estadisticas, container, false);
         tipoDato = (TextView) view.findViewById(R.id.tipoDato);
+        tipoDato.setText("Pulse un boton");
         preparaBotonJuego(view, inflater);
         preparaBotonGenero(view, inflater);
         preparaBotonModo(view, inflater);
