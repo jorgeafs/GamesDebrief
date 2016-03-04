@@ -32,11 +32,9 @@ import java.util.List;
  * to handle interaction events.
  * Use the {@link DetallePartida#newInstance} factory method to
  * create an instance of this fragment.
- * TODO:
  *  Añadir "vista elevada" para añadir un nuevo mapa....
  */
 public class DetallePartida extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "juegoId";
     private static final String ARG_PARAM2 = "modoId";
@@ -46,7 +44,6 @@ public class DetallePartida extends Fragment {
     private static final String MAPA = "mapa";
 
 
-    // TODO: Rename and change types of parameters
     private long mParam1;
     private long mParam2;
     private boolean mParam3;
@@ -78,7 +75,6 @@ public class DetallePartida extends Fragment {
      * @param isSinglePlayer Parameter 3.
      * @return A new instance of fragment DetallePartida.
      */
-    // TODO: Rename and change types and number of parameters
     public static DetallePartida newInstance(long juegoId, long modoId, boolean isSinglePlayer) {
         DetallePartida fragment = new DetallePartida();
         Bundle args = new Bundle();
@@ -254,7 +250,7 @@ public class DetallePartida extends Fragment {
     }
 
 
-/*    // TODO: Rename method, update argument and hook method into UI event
+/*
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
