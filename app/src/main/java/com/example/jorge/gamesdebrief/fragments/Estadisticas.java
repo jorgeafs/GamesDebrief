@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.jorge.gamesdebrief.R;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
+import com.example.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,10 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class Estadisticas extends Fragment {
+
+    private static final String JUEGO = "Juego";
+    private static final String MODO = "Modo";
+    private static final String GENERO = "Genero";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -87,6 +92,7 @@ public class Estadisticas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_estadisticas, container, false);
+        tipoDato = (TextView) view.findViewById(R.id.tipoDato);
         preparaBotonJuego(view, inflater);
         preparaBotonGenero(view, inflater);
         preparaBotonModo(view, inflater);
@@ -97,12 +103,21 @@ public class Estadisticas extends Fragment {
         return view;
     }
 
-    private void preparaBotonJuego(View view, LayoutInflater inflater){
+    private void preparaBotonJuego(View view, final LayoutInflater inflater){
         juego = (Button) view.findViewById(R.id.botonJuego);
         juego.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Resultados result = mListener.estadisticaJuegos();
+                tipoDato.setText(JUEGO);
+                adaptadorDatos = new MultiAdaptador(result.getNombre(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorGanada = new MultiAdaptador(result.getGanadas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorDatos.notifyDataSetChanged();
+                adaptadorGanada.notifyDataSetChanged();
+                adaptadorEmpatada.notifyDataSetChanged();
+                adaptadorPerdida.notifyDataSetChanged();
             }
         });
     }
@@ -112,7 +127,16 @@ public class Estadisticas extends Fragment {
         genero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Resultados result = mListener.estadisticasGenero();
+                tipoDato.setText(GENERO);
+                adaptadorDatos = new MultiAdaptador(result.getNombre(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorGanada = new MultiAdaptador(result.getGanadas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(),LayoutInflater.from(actualContext),actualContext);
+                adaptadorDatos.notifyDataSetChanged();
+                adaptadorGanada.notifyDataSetChanged();
+                adaptadorEmpatada.notifyDataSetChanged();
+                adaptadorPerdida.notifyDataSetChanged();
             }
         });
     }
@@ -122,7 +146,16 @@ public class Estadisticas extends Fragment {
         modo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Resultados result = mListener.estadisticasModo();
+                tipoDato.setText(GENERO);
+                adaptadorDatos = new MultiAdaptador(result.getNombre(), LayoutInflater.from(actualContext), actualContext);
+                adaptadorGanada = new MultiAdaptador(result.getGanadas(), LayoutInflater.from(actualContext), actualContext);
+                adaptadorEmpatada = new MultiAdaptador(result.getEmpatadas(), LayoutInflater.from(actualContext), actualContext);
+                adaptadorPerdida = new MultiAdaptador(result.getPerdidas(), LayoutInflater.from(actualContext), actualContext);
+                adaptadorDatos.notifyDataSetChanged();
+                adaptadorGanada.notifyDataSetChanged();
+                adaptadorEmpatada.notifyDataSetChanged();
+                adaptadorPerdida.notifyDataSetChanged();
             }
         });
     }
@@ -151,12 +184,12 @@ public class Estadisticas extends Fragment {
         listaPerdida.setAdapter(adaptadorPerdida);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+/*    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
+    }*/
 
     @Override
     public void onAttach(Context context) {
@@ -187,7 +220,9 @@ public class Estadisticas extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        public Resultados estadisticaJuegos();
+        public Resultados estadisticasModo();
+        public Resultados estadisticasGenero();
+
     }
 }

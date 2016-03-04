@@ -11,29 +11,29 @@ import java.util.List;
  */
 public class Resultados implements Serializable{
     private List<DatosSpiner> nombre;
-    private int ganadas;
-    private int empatadas;
-    private int perdidas;
+    private List<DatosSpiner> ganadas;
+    private List<DatosSpiner> empatadas;
+    private List<DatosSpiner> perdidas;
 
     public Resultados() {
         this.nombre = new ArrayList<>();
-        this.ganadas = 0;
-        this.empatadas = 0;
-        this.perdidas = 0;
+        this.ganadas = new ArrayList<>();
+        this.empatadas = new ArrayList<>();
+        this.perdidas = new ArrayList<>();
     }
 
-    public Resultados(List<DatosSpiner> nombre, int ganadas, int empatadas, int perdidas) {
+    public Resultados(List<DatosSpiner> nombre, List<DatosSpiner> ganadas, List<DatosSpiner> empatadas, List<DatosSpiner> perdidas) {
         this.empatadas = empatadas;
         this.ganadas = ganadas;
         this.nombre = nombre;
         this.perdidas = perdidas;
     }
 
-    public int getEmpatadas() {
+    public List<DatosSpiner> getEmpatadas() {
         return empatadas;
     }
 
-    public int getGanadas() {
+    public List<DatosSpiner> getGanadas() {
         return ganadas;
     }
 
@@ -41,15 +41,15 @@ public class Resultados implements Serializable{
         return nombre;
     }
 
-    public int getPerdidas() {
+    public List<DatosSpiner> getPerdidas() {
         return perdidas;
     }
 
-    public void setEmpatadas(int empatadas) {
+    public void setEmpatadas(List<DatosSpiner> empatadas) {
         this.empatadas = empatadas;
     }
 
-    public void setGanadas(int ganadas) {
+    public void setGanadas(List<DatosSpiner> ganadas) {
         this.ganadas = ganadas;
     }
 
@@ -57,7 +57,7 @@ public class Resultados implements Serializable{
         this.nombre = nombre;
     }
 
-    public void setPerdidas(int perdidas) {
+    public void setPerdidas(List<DatosSpiner> perdidas) {
         this.perdidas = perdidas;
     }
 }

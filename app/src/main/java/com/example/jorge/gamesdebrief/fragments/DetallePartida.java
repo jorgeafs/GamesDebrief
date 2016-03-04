@@ -47,8 +47,8 @@ public class DetallePartida extends Fragment {
 
 
     // TODO: Rename and change types of parameters
-    private int mParam1;
-    private int mParam2;
+    private long mParam1;
+    private long mParam2;
     private boolean mParam3;
 
     private OnFragmentInteractionListener mListener;
@@ -79,11 +79,11 @@ public class DetallePartida extends Fragment {
      * @return A new instance of fragment DetallePartida.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetallePartida newInstance(int juegoId, int modoId, boolean isSinglePlayer) {
+    public static DetallePartida newInstance(long juegoId, long modoId, boolean isSinglePlayer) {
         DetallePartida fragment = new DetallePartida();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, juegoId);
-        args.putInt(ARG_PARAM2, modoId);
+        args.putLong(ARG_PARAM1, juegoId);
+        args.putLong(ARG_PARAM2, modoId);
         args.putBoolean(ARG_PARAM3,isSinglePlayer);
         fragment.setArguments(args);
         return fragment;
@@ -93,8 +93,8 @@ public class DetallePartida extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
-            mParam2 = getArguments().getInt(ARG_PARAM2);
+            mParam1 = getArguments().getLong(ARG_PARAM1);
+            mParam2 = getArguments().getLong(ARG_PARAM2);
             mParam3 = getArguments().getBoolean(ARG_PARAM3);
             informe = new Partida();
             informe.setIdJuego(mParam1);
@@ -187,7 +187,7 @@ public class DetallePartida extends Fragment {
                     informe.setIdMapa(adaptadorMapa.getItem(position).getId());
                 } else if (adaptadorMapa.getItem(position).getId() == -1) {// marca de id para añadir un nuevo mapa...
                     //mostrar una vista parcial en la que se añada el nombre del mapa.
-                    DialogFragment añadir = DialogAñadir.newInstance(MAPA);
+                    DialogFragment añadir = DialogAñadir.newInstance(MAPA,mParam1);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(),"dialog");
                 }
@@ -292,6 +292,6 @@ public class DetallePartida extends Fragment {
     public interface OnFragmentInteractionListener {
         public void guardarDatos(Partida informe);
         public void faltanDatos(Partida aTostar);
-        public List<DatosSpiner> getMapas(int idJuegos);
+        public List<DatosSpiner> getMapas(long idJuegos);
     }
 }

@@ -20,6 +20,7 @@ import com.example.jorge.gamesdebrief.R;
  */
 public class DialogAñadir extends DialogFragment {
     private static final String TITULO = "Titulo";
+    private static final String ID_JUEGO = "idJuego";
 
 
     private OnDialogInteractionListener mListener;
@@ -29,15 +30,17 @@ public class DialogAñadir extends DialogFragment {
     private Button noHacerNada;
     private TextView tituloMostrar;
     private EditText nombre;
+    private long idJuego;
 
     public DialogAñadir() {
 
     }
 
-    public static DialogAñadir newInstance(String titulito){
+    public static DialogAñadir newInstance(String titulito, long idjuego){
         DialogAñadir dialog = new DialogAñadir();
         Bundle args = new Bundle();
         args.putString(TITULO, titulito);
+        args.putLong(ID_JUEGO,idjuego);
         dialog.setArguments(args);
         return dialog;
     }
@@ -99,7 +102,7 @@ public class DialogAñadir extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if(nombre.getText().toString() != null && !nombre.getText().toString().isEmpty()) {
-                    mListener.sendNombre(nombre.getText().toString(), titulo);
+                    mListener.sendNombre(nombre.getText().toString(), titulo, idJuego);
                     tituloMostrar.setText("Deme nuevo nombre de " + titulo);
                     nombre.setText("");
                 }
@@ -113,7 +116,7 @@ public class DialogAñadir extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if(nombre.getText().toString() != null && !nombre.getText().toString().isEmpty()) {
-                    mListener.sendNombre(nombre.getText().toString(), titulo);
+                    mListener.sendNombre(nombre.getText().toString(), titulo, idJuego);
                     dismiss();
                 }
             }
@@ -132,6 +135,6 @@ public class DialogAñadir extends DialogFragment {
     }
 
     public interface OnDialogInteractionListener {
-        public void sendNombre(String dato, String nombreDato);
+        public void sendNombre(String dato, String nombreDato, long identityJuego);
     }
 }

@@ -116,7 +116,7 @@ public class MenuJuego extends Fragment {
                     rellenarPartida.setEnabled(false);
                 } else if (modosAdapter.getItem(position).getId() == -1) {
                     rellenarPartida.setEnabled(false);
-                    DialogFragment añadir = DialogAñadir.newInstance(MODO);
+                    DialogFragment añadir = DialogAñadir.newInstance(MODO,((DatosSpiner)juegos.getSelectedItem()).getId());
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
                 } else {
@@ -253,7 +253,7 @@ public class MenuJuego extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         public List<DatosSpiner> getJuegos();
-        public List<DatosSpiner> getModos(int juegoId);
-        public void lanzaInforme(int juegoId, int modoId, boolean isSinglePlayer);
+        public List<DatosSpiner> getModos(long juegoId);
+        public void lanzaInforme(long juegoId, long modoId, boolean isSinglePlayer);
     }
 }

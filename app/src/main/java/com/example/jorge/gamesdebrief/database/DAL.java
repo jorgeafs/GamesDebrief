@@ -293,7 +293,7 @@ public class DAL implements Serializable {
         return correcto != -1;
     }
 
-    private long addModo(String nombre){
+    public long addModo(String nombre){
         long idModo = -1;
         boolean existe = false;
         List<DatosSpiner> modos = getModos();
@@ -397,245 +397,179 @@ public class DAL implements Serializable {
 
     public Resultados resultadosPorJuegos(){
         Resultados devolver;
-        int partidasGanadas = getPartidasGanadasPorJuego();
-        int partidaEmpatadas = getPartidasEmpatadasPorJuego();
-        int partidaPerdidas = getPartidasPerdidasPorJuego();
+        List<DatosSpiner> partidasGanadas = getPartidasGanadasPorJuego();
+        List<DatosSpiner> partidaEmpatadas = getPartidasEmpatadasPorJuego();
+        List<DatosSpiner> partidaPerdidas = getPartidasPerdidasPorJuego();
         devolver = new Resultados(getJuegos(),partidasGanadas,partidaEmpatadas,partidaPerdidas);
         return devolver;
     }
 
     public Resultados resultadosPorModos(){
         Resultados devolver;
-        int partidasGanadas = getPartidasGanadasPorModo();
-        int partidaEmpatadas = getPartidasEmpatadasPorModo();
-        int partidaPerdidas = getPartidasPerdidasPorModo();
+        List<DatosSpiner> partidasGanadas = getPartidasGanadasPorModo();
+        List<DatosSpiner> partidaEmpatadas = getPartidasEmpatadasPorModo();
+        List<DatosSpiner> partidaPerdidas = getPartidasPerdidasPorModo();
         devolver = new Resultados(getModos(),partidasGanadas,partidaEmpatadas,partidaPerdidas);
         return devolver;
     }
     public Resultados resultadosPorGenero(){
         Resultados devolver;
-        int partidasGanadas = getPartidasGanadasPorGenero();
-        int partidaEmpatadas = getPartidasEmpatadasPorGenero();
-        int partidaPerdidas = getPartidasPerdidasPorGenero();
+        List<DatosSpiner> partidasGanadas = getPartidasGanadasPorGenero();
+        List<DatosSpiner> partidaEmpatadas = getPartidasEmpatadasPorGenero();
+        List<DatosSpiner> partidaPerdidas = getPartidasPerdidasPorGenero();
         devolver = new Resultados(getGeneros(),partidasGanadas,partidaEmpatadas,partidaPerdidas);
         return devolver;
     }
 
-    private int getPartidasGanadasPorJuego() {
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO + " = " + GANADA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_JUEGO + " ASC "
-        );
-        if(cursor.moveToFirst()){
-          do {
-              devolver++;
-          }while(cursor.moveToNext());
-        }
-        return devolver;
-    }
+    private List<DatosSpiner> getPartidasGanadasPorJuego() {
 
-    private  int getPartidasEmpatadasPorJuego(){
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO+" = "+EMPATADA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_JUEGO+ " ASC "
-        );
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+GANADA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
     }
 
-    private int getPartidasPerdidasPorJuego(){
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO+" = "+PERDIDA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_JUEGO+ " ASC "
-        );
+    private  List<DatosSpiner> getPartidasEmpatadasPorJuego(){
+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+EMPATADA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
     }
 
-    private int getPartidasGanadasPorModo (){
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO+" = "+GANADA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ASC "
-        );
+    private List<DatosSpiner> getPartidasPerdidasPorJuego(){
+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+PERDIDA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_JUEGO+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
     }
 
-    private int getPartidasEmpatadasPorModo(){
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO+" = "+EMPATADA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ASC "
-        );
+    private List<DatosSpiner> getPartidasGanadasPorModo (){
+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+GANADA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
     }
 
-    private int getPartidasPerdidasPorModo() {
-        int devolver = 0;
-        String[] columnas = {PartidasDB.Partida.PARTIDA_RESULTADO};
-        Cursor cursor = this.helper.getReadableDatabase().query(
-                //Nombre de la tabla
-                PartidasDB.Partida.PARTIDA_TABLE_NAME
-                //columnas
-                , columnas
-                //where
-                , PartidasDB.Partida.PARTIDA_RESULTADO+" = "+PERDIDA
-                //argumentos del where
-                , null
-                //group by
-                , null
-                //Having
-                , null
-                //OrderBy
-                , PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ASC "
-        );
+    private List<DatosSpiner> getPartidasEmpatadasPorModo(){
+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+EMPATADA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
     }
 
-    private int getPartidasGanadasPorGenero() {
+    private List<DatosSpiner> getPartidasPerdidasPorModo() {
 
-        int devolver = 0;
-        String sentenciaSql = "Select "+PartidasDB.Partida.PARTIDA_RESULTADO+
-                " FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+PERDIDA+
+                " GROUP BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+ " ORDER BY "+PartidasDB.Partida.PARTIDA_ID_MODO_PARTIDA+" ASC";
+
+        Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
+        if(cursor.moveToFirst()){
+            do {
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
+            }while(cursor.moveToNext());
+        }
+        return devolver;
+    }
+
+    private List<DatosSpiner> getPartidasGanadasPorGenero() {
+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
                 PartidasDB.Juego.JUEGO_TABLE_NAME+" ON "+ PartidasDB.Partida.PARTIDA_ID_JUEGO+" = "+PartidasDB.Juego.JUEGO_ID+
                 " JOIN "+ PartidasDB.Genero.GENERO_TABLE_NAME+" ON "+PartidasDB.Juego.JUEGO_ID_GENERO +" = "+
                 PartidasDB.Genero.GENERO_ID+ " WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+GANADA+
-                " ORDER BY "+PartidasDB.Genero.GENERO_ID;
+                " GROUP BY "+PartidasDB.Genero.GENERO_ID+ " ORDER BY "+PartidasDB.Genero.GENERO_ID +" ASC";
 
         Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql,null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
 
     }
 
-    private int getPartidasEmpatadasPorGenero() {
+    private List<DatosSpiner> getPartidasEmpatadasPorGenero() {
 
-        int devolver = 0;
-        String sentenciaSql = "Select "+PartidasDB.Partida.PARTIDA_RESULTADO+
-                " FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
                 PartidasDB.Juego.JUEGO_TABLE_NAME+" ON "+ PartidasDB.Partida.PARTIDA_ID_JUEGO+" = "+PartidasDB.Juego.JUEGO_ID+
                 " JOIN "+ PartidasDB.Genero.GENERO_TABLE_NAME+" ON "+PartidasDB.Juego.JUEGO_ID_GENERO +" = "+
                 PartidasDB.Genero.GENERO_ID+ " WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+EMPATADA+
-                " ORDER BY "+PartidasDB.Genero.GENERO_ID;
+                " GROUP BY "+PartidasDB.Genero.GENERO_ID+ " ORDER BY "+PartidasDB.Genero.GENERO_ID+" ASC";
 
         Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;
 
     }
 
-    private int getPartidasPerdidasPorGenero(){
-        int devolver = 0;
-        String sentenciaSql = "Select "+PartidasDB.Partida.PARTIDA_RESULTADO+
-                " FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
+    private List<DatosSpiner> getPartidasPerdidasPorGenero(){
+        List<DatosSpiner> devolver = new ArrayList<>();
+        String sentenciaSql = "Select COUNT( "+PartidasDB.Partida.PARTIDA_RESULTADO+
+                " ) FROM "+PartidasDB.Partida.PARTIDA_TABLE_NAME+" JOIN "+
                 PartidasDB.Juego.JUEGO_TABLE_NAME+" ON "+ PartidasDB.Partida.PARTIDA_ID_JUEGO+" = "+PartidasDB.Juego.JUEGO_ID+
                 " JOIN "+ PartidasDB.Genero.GENERO_TABLE_NAME+" ON "+PartidasDB.Juego.JUEGO_ID_GENERO +" = "+
                 PartidasDB.Genero.GENERO_ID+ " WHERE "+PartidasDB.Partida.PARTIDA_RESULTADO+ " = "+PERDIDA+
-                " ORDER BY "+PartidasDB.Genero.GENERO_ID;
+                " GROUP BY "+PartidasDB.Genero.GENERO_ID+ " ORDER BY "+PartidasDB.Genero.GENERO_ID+" ASC";
 
         Cursor cursor = this.helper.getReadableDatabase().rawQuery(sentenciaSql, null);
         if(cursor.moveToFirst()){
             do {
-                devolver++;
+                devolver.add(new DatosSpiner(cursor.getInt(0)+"",0));
             }while(cursor.moveToNext());
         }
         return devolver;

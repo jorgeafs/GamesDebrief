@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.Partida;
+import com.example.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 import com.example.jorge.gamesdebrief.database.DAL;
 import com.example.jorge.gamesdebrief.fragments.Addjuego;
 import com.example.jorge.gamesdebrief.fragments.DetallePartida;
@@ -35,13 +36,14 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     private static final String SELECCIONE_JUEGO = "Seleccione un juego";
     private static final String AÑADA_UN_JUEGO = "Añada un juego nuevo";
     private static final String AÑADA_UN_MODO = "Añada un modo nuevo";
-    private DAL dal;
 
 
     //Variables
-    MenuPrincipal menuPrincipal;
-    MenuJuego menuJuego;
-    DetallePartida detalles;
+    private MenuPrincipal menuPrincipal;
+    private MenuJuego menuJuego;
+    private DetallePartida detalle;
+    private Addjuego addjuego;
+    private Estadisticas estadisticas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,9 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
 
     @Override
     public void eligeJuego() {
+        menuJuego = new MenuJuego();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.singleContainer, new MenuJuego());
+        transaction.replace(R.id.singleContainer, menuJuego);
         transaction.addToBackStack(null);
         transaction.commit();
 
@@ -88,8 +91,9 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     @Override
     public void añadeJuego() {
         //tostadora("esta opcion no esta disponible todavia");
+        addjuego = new Addjuego();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.singleContainer,new Addjuego());
+        transaction.replace(R.id.singleContainer,addjuego);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -97,8 +101,9 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     @Override
     public void eligeEstadiscasJuego() {
         //tostadora("esta opcion no esta disponible todavia");
+        estadisticas = new Estadisticas();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.singleContainer, new Estadisticas());
+        transaction.replace(R.id.singleContainer, estadisticas);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -112,19 +117,19 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
-    public List<DatosSpiner> getModos(int juegoId) {
+    public List<DatosSpiner> getModos(long juegoId) {
         List<DatosSpiner> modos = new ArrayList<>();
-        modos.add(new DatosSpiner(SELECCIONE_MODO,0));
+        modos.add(new DatosSpiner(SELECCIONE_MODO, 0));
         modos.addAll(new DAL(getApplicationContext()).getModos(juegoId));
         modos.add(new DatosSpiner(AÑADA_UN_MODO, -1));
         return modos;
     }
 
     @Override
-    public void lanzaInforme(int juegoId, int modoId, boolean isSinglePlayer) {
-        DetallePartida partida = DetallePartida.newInstance(juegoId, modoId, isSinglePlayer);
+    public void lanzaInforme(long juegoId, long modoId, boolean isSinglePlayer) {
+        detalle = DetallePartida.newInstance(juegoId, modoId, isSinglePlayer);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.singleContainer, partida);
+        transaction.replace(R.id.singleContainer, detalle);
         transaction.addToBackStack(null);
         transaction.commit();
         //tostadora("Opcion no disponible");
@@ -133,11 +138,17 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     @Override
     public void guardarDatos(Partida informe) {
 //Se guardan los datos y se vuelve al fragment principal
+        boolean correcto = new DAL(getApplicationContext()).addPartida(informe);
+        menuPrincipal = new MenuPrincipal();
+        String error = "No se salvo bien el informe";
         FragmentManager manager = getFragmentManager();
         limpiaBackStack(manager); // me evito que el usuario pueda volver para atras
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.singleContainer, new MenuPrincipal());
+        transaction.replace(R.id.singleContainer, menuPrincipal);
         transaction.commit();
+        if(!correcto){
+            tostadora(error);
+        }
     }
 
     @Override
@@ -165,53 +176,98 @@ public class MainActivity extends Activity implements MenuPrincipal.OnFragmentIn
     }
 
     @Override
-    public List<DatosSpiner> getMapas(int idJuegos) {
+    public List<DatosSpiner> getMapas(long idJuegos) {
         List<DatosSpiner> mapas = new ArrayList<>();
         mapas.add(new DatosSpiner("Selecciona un mapa", 0));
-        mapas.add(new DatosSpiner("Inferno", 1));
-        mapas.add(new DatosSpiner("Hell's door", 2));
+        mapas.addAll(new DAL(getApplicationContext()).getMapas(idJuegos));
         mapas.add(new DatosSpiner("Añada nuevo mapa", -1));
         return mapas;
     }
 
     @Override
-    public void sendNombre(String dato, String nombreDato) {
+    public void sendNombre(String dato, String nombreDato, long identityJuego) {
+        boolean conseguido = false;
+        long id;
         switch (nombreDato) {
             case MAPA:
-                tostadora("Falta añadir a db y recargar el spinner " + nombreDato);
-                break;
-            case JUEGO:
-                tostadora("Falta añadir a db y recargar el spinner " + nombreDato);
+                if(identityJuego!=-2){
+                    new DAL(getApplicationContext()).addMapa(identityJuego,dato);
+                    detalle.actualizaMapa();
+                }else{
+                    addjuego.actualizaMapa(dato);
+                }
                 break;
             case MODO:
-                tostadora("Falta añadir a db y recargar el spinner " + nombreDato);
+                if(identityJuego!= -2) {
+                    conseguido = new DAL(getApplicationContext()).addModo(identityJuego, dato);
+                    if (!conseguido) {
+                        tostadora("No se pudo añadir el modo " + dato);
+                    } else {
+                        menuJuego.actualizaModo();
+                    }
+                } else {
+                    id = new DAL(getApplicationContext()).addModo(dato);
+                    if(id==-1){
+                        tostadora("No se pudo añadir el modo "+dato);
+                    } else {
+                        addjuego.actualizaModo();
+                    }
+                }
                 break;
             case GENERO:
-                tostadora("Falta añadir a db y recargar el spinner " + nombreDato);
+                conseguido = new DAL(getApplicationContext()).insertaGenero(dato);
+                if(!conseguido){
+                tostadora("No se pudo añadir el genero " + dato);
+                } else {
+                    addjuego.actualizaGenero();
+                }
                 break;
         }
     }
 
     @Override
     public List<DatosSpiner> getDatos(String nombreDato) {
-        tostadora("Esto no esta disponible aun" + nombreDato);
         List<DatosSpiner> devolver = new ArrayList<>();
-        devolver.add(new DatosSpiner("Hola", 0));
+        switch (nombreDato){
+            case GENERO:
+                devolver = new DAL(getApplicationContext()).getGeneros();
+                break;
+            case MODO:
+                devolver = new DAL(getApplicationContext()).getModos();
+                break;
+            case MAPA:
+                devolver= new DAL(getApplicationContext()).getMapas();
+                break;
+        }
         return devolver;
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-    @Override
-    public void insertaDatos(String nombreJuego, DatosSpiner nombreGenero, List<DatosSpiner>... datos) {
-
+    public void insertaJuegoCompleto(String nombreJuego, DatosSpiner genero, List<DatosSpiner> mapasAdd, List<DatosSpiner> modosAdd) {
+        new DAL(getApplicationContext()).addJuego(nombreJuego,genero,mapasAdd,modosAdd);
     }
 
     @Override
     public void tostar(String frase) {
         tostadora(frase);
+    }
+
+
+    @Override
+    public Resultados estadisticaJuegos() {
+        Resultados resultados = new DAL(getApplicationContext()).resultadosPorJuegos();
+        return resultados;
+    }
+
+    @Override
+    public Resultados estadisticasGenero() {
+        Resultados resultados = new DAL(getApplicationContext()).resultadosPorGenero();
+        return resultados;
+    }
+
+    @Override
+    public Resultados estadisticasModo() {
+        Resultados resultados = new DAL(getApplicationContext()).resultadosPorModos();
+        return resultados;
     }
 }

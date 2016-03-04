@@ -16,6 +16,7 @@ import com.example.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
 import com.example.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import com.example.jorge.gamesdebrief.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -54,6 +55,7 @@ public class Addjuego extends Fragment {
     private MultiAdaptador adaptadorMapa;
     private MultiAdaptador adaptadorListaModo;
     private MultiAdaptador adaptadorListaMapa;
+    private List<DatosSpiner> vacio = new ArrayList<>();
 
 
     private OnFragmentInteractionListener mListener;
@@ -106,13 +108,13 @@ public class Addjuego extends Fragment {
 
     private void preparaListaMapa(View view, LayoutInflater inflater) {
         añadeMapa = (ListView) view.findViewById(R.id.listMapa);
-        adaptadorListaMapa = new MultiAdaptador(mListener.getDatos(MAPA),inflater,actualContex);
+        adaptadorListaMapa = new MultiAdaptador(vacio,inflater,actualContex);
         añadeMapa.setAdapter(adaptadorListaMapa);
     }
 
     private void preparaListaModo(View view, LayoutInflater inflater) {
         añadeModo = (ListView) view.findViewById(R.id.listModo);
-        adaptadorListaModo = new MultiAdaptador(mListener.getDatos(MODO),inflater,actualContex);
+        adaptadorListaModo = new MultiAdaptador(vacio,inflater,actualContex);
         añadeModo.setAdapter(adaptadorListaModo);
     }
 
@@ -124,7 +126,7 @@ public class Addjuego extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (adaptadorGenero.getItem(position).getId() == -1) {
-                    DialogFragment añadir = DialogAñadir.newInstance(GENERO);
+                    DialogFragment añadir = DialogAñadir.newInstance(GENERO,1);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
                 }
@@ -145,7 +147,7 @@ public class Addjuego extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (adaptadorModo.getItem(position).getId() == -1) {
-                    DialogFragment añadir = DialogAñadir.newInstance(MODO);
+                    DialogFragment añadir = DialogAñadir.newInstance(MODO,-2);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
                 } else if (adaptadorModo.getItem(position).getId() > 0) {
@@ -173,7 +175,7 @@ public class Addjuego extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (adaptadorMapa.getItem(position).getId() == -1) {
-                    DialogFragment añadir = DialogAñadir.newInstance(MAPA);
+                    DialogFragment añadir = DialogAñadir.newInstance(MAPA, -2);
                     añadir.setShowsDialog(true);
                     añadir.show(getFragmentManager(), "dialog");
                 } else if (adaptadorMapa.getItem(position).getId() > 0) {
@@ -222,8 +224,11 @@ public class Addjuego extends Fragment {
         adaptadorGenero.notifyDataSetChanged();
     }
 
-    public void actualizaMapa(){
-        adaptadorMapa = new MultiAdaptador(mListener.getDatos(MAPA),LayoutInflater.from(actualContex),actualContex);
+    public void actualizaMapa(String nombre){
+        DatosSpiner nuevoMapa = new DatosSpiner(nombre,-2);
+        List<DatosSpiner> old = adaptadorMapa.getList();
+        old.add(nuevoMapa);
+        adaptadorMapa = new MultiAdaptador(old,LayoutInflater.from(actualContex),actualContex);
         mapa.setAdapter(adaptadorMapa);
         adaptadorMapa.notifyDataSetChanged();
     }
