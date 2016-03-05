@@ -629,7 +629,7 @@ public class DAL implements Serializable {
             for (DatosSpiner comparando : comparador) {
                 for (DatosSpiner genero : original) {
                     if (comparando.getId() == genero.getId()) {
-                        devolver.add(new DatosSpiner(comparando.getTexto(), Long.getLong(genero.getTexto())));
+                        devolver.add(new DatosSpiner(comparando.getTexto(), Long.parseLong(genero.getTexto())));
                     }
                 }
             }
@@ -732,19 +732,21 @@ public class DAL implements Serializable {
 
     private List<DatosSpiner> insertaCeros(List<DatosSpiner> modificar, List<DatosSpiner> dato) {
         List<DatosSpiner> devolver = new ArrayList<>();
-        for(DatosSpiner modificando: modificar){
-            for(DatosSpiner canon:dato){
-                if(devolver.size()==0){
-                    devolver.add(modificando);
-                } else if(modificando.getId() == canon.getId()) {
-                    devolver.add(modificando);
+        if(modificar.size()>0) {
+            for (int i = 0, j = 0; i < dato.size() ; i++) {
+                if(j>=modificar.size()) {
+                    devolver.add(new DatosSpiner(Long.toString(0), dato.get(i).getId()));
+                } else if (dato.get(i).getId() == modificar.get(j).getId()) {
+                    devolver.add(modificar.get(j));
+                    j++;
                 } else {
-                    devolver.add(new DatosSpiner(Long.toString(0), canon.getId()));
+                    devolver.add(new DatosSpiner(Long.toString(0), dato.get(i).getId()));
                 }
             }
         }
         return devolver;
     }
+
 
     private List<DatosSpiner> sumaResultadoListaOrdenada(List<DatosSpiner> aSumar) {
         List<DatosSpiner> devolver = new ArrayList<>();
