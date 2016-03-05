@@ -1,11 +1,12 @@
 package ies.nervion.jorge.gamesdebrief.clasesDeApoyo;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by Jorge on 26/02/2016.
  */
-public class DatosSpiner implements Serializable {
+public class DatosSpiner implements Serializable, Comparable<DatosSpiner> {
     private String texto;
     private long id;
 
@@ -14,7 +15,7 @@ public class DatosSpiner implements Serializable {
         this.id = 0;
     }
 
-    public DatosSpiner(String texto, int id) {
+    public DatosSpiner(String texto, long id) {
         this.texto = texto;
         this.id = id;
     }
@@ -33,5 +34,16 @@ public class DatosSpiner implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(DatosSpiner another) {
+        int devolver = 1;
+        if(this.id < another.getId()){
+            devolver =-1;
+        } else if(this.id == another.getId()){
+            devolver = 0;
+        }
+        return devolver;
     }
 }
