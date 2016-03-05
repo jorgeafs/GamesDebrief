@@ -88,29 +88,7 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="2dp"
-                android:layout_weight="5"/>
-            <ListView
-                android:id="@+id/listaPartidasGanadas"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="2dp"
-                android:layout_weight="5"/>
-            <ListView
-                android:id="@+id/listaPartidasEmpatadas"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="2dp"
-                android:layout_weight="5"/>
-            <ListView
-                android:id="@+id/listaPartidasPerdidas"
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="2dp"
-                android:layout_weight="5"/>
+                android:dividerHeight="2dp"/>
         </LinearLayout>
 </LinearLayout>
 </RelativeLayout>

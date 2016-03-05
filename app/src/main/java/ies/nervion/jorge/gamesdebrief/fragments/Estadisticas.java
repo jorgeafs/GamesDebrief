@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.jorge.gamesdebrief.R;
 
 import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.DatosSpiner;
+import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.FourColumnAdaptor;
 import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.MultiAdaptador;
 import ies.nervion.jorge.gamesdebrief.clasesDeApoyo.Resultados;
 
@@ -45,17 +46,8 @@ public class Estadisticas extends Fragment {
     private Button modo;
     private TextView tipoDato;
     private ListView listaDato;
-    private ListView listaGanada;
-    private ListView listaEmpatada;
-    private ListView listaPerdida;
-    private MultiAdaptador adaptadorDatos;
-    private MultiAdaptador adaptadorGanada;
-    private MultiAdaptador adaptadorEmpatada;
-    private MultiAdaptador adaptadorPerdida;
-    private List<DatosSpiner> datos = new ArrayList<>();
-    private List<DatosSpiner> ganadas = new ArrayList<>();
-    private List<DatosSpiner> empatadas = new ArrayList<>();
-    private List<DatosSpiner> perdidas = new ArrayList<>();
+    private FourColumnAdaptor adaptadorDatos;
+    private Resultados datos = new Resultados();
     private Context actualContext;
     private OnFragmentInteractionListener mListener;
 
@@ -97,22 +89,19 @@ public class Estadisticas extends Fragment {
         tipoDato = (TextView) view.findViewById(R.id.tipoDato);
         tipoDato.setText("Pulse un boton");
         preparaListaDato(view, inflater);
-        preparaListaGanada(view, inflater);
-        preparaListaEmpatada(view, inflater);
-        preparaListaPerdida(view, inflater);
-        preparaBotonJuego(view, inflater);
-        preparaBotonGenero(view, inflater);
-        preparaBotonModo(view, inflater);
+        preparaBotonJuego(view);
+        preparaBotonGenero(view);
+        preparaBotonModo(view);
         return view;
     }
 
-    private void preparaBotonJuego(View view, final LayoutInflater inflater){
+    private void preparaBotonJuego(View view){
         juego = (Button) view.findViewById(R.id.botonJuego);
         juego.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticaJuegos();
-                asignaListas(result);
+                datos = result;
                 tipoDato.setText(JUEGO);
                 resetearListas();
                 //Toast tostada = new Toast(actualContext);
@@ -121,94 +110,43 @@ public class Estadisticas extends Fragment {
         });
     }
 
-    private void resetearListas() {
-        adaptadorDatos.getList().clear();
-        adaptadorDatos.getList().addAll(datos);
-        adaptadorDatos.notifyDataSetChanged();
-        adaptadorEmpatada.getList().clear();
-        adaptadorEmpatada.getList().addAll(empatadas);
-        adaptadorEmpatada.notifyDataSetChanged();
-        adaptadorGanada.getList().clear();
-        adaptadorGanada.getList().addAll(ganadas);
-        adaptadorGanada.notifyDataSetChanged();
-        adaptadorPerdida.getList().clear();
-        adaptadorPerdida.getList().addAll(perdidas);
-        adaptadorPerdida.notifyDataSetChanged();
-    }
 
-    private void asignaListas(Resultados result) {
-        datos = new ArrayList<>();
-        ganadas = new ArrayList<>();
-        if(result.getNombre().size()>0) {
-            datos = result.getNombre();
-        }else {
-            datos.add(new DatosSpiner(""+0,-5 ));
-        }
-        if(result.getGanadas().size()>0) {
-            ganadas = result.getGanadas();
-        } else {
-            ganadas.add(new DatosSpiner(""+0,-5 ));
-        }
-        if(result.getEmpatadas().size()>0){
-            empatadas = result.getEmpatadas();
-        } else {
-            empatadas.add(new DatosSpiner(""+0,-5 ));
-        }
-        if(result.getPerdidas().size()>0){
-            perdidas = result.getPerdidas();
-        } else{
-            perdidas.add(new DatosSpiner(""+0,-5 ));
-        }
-    }
-
-    private void preparaBotonGenero(View view, LayoutInflater inflater){
+    private void preparaBotonGenero(View view){
         genero = (Button) view.findViewById(R.id.botonGenero);
         genero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasGenero();
-                asignaListas(result);
+                datos = result;
                 tipoDato.setText(GENERO);
                 resetearListas();
             }
         });
     }
 
-    private void preparaBotonModo(View view, LayoutInflater inflater){
+    private void preparaBotonModo(View view){
         modo = (Button) view.findViewById(R.id.botonModo);
         modo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasModo();
-                asignaListas(result);
+                datos = result;
                 tipoDato.setText(MODO);
                 resetearListas();
             }
         });
     }
 
+    private void resetearListas() {
+        adaptadorDatos.clearLista();
+        adaptadorDatos.setLista(datos);
+        adaptadorDatos.notifyDataSetChanged();
+    }
+
     private void preparaListaDato(View view, LayoutInflater inflater){
         listaDato = (ListView) view.findViewById(R.id.listaDatos);
-        adaptadorDatos = new MultiAdaptador(datos, inflater, actualContext);
+        adaptadorDatos = new FourColumnAdaptor(actualContext, datos,inflater);
         listaDato.setAdapter(adaptadorDatos);
-    }
-
-    private void preparaListaGanada(View view, LayoutInflater inflater){
-        listaGanada = (ListView) view.findViewById(R.id.listaPartidasGanadas);
-        adaptadorGanada = new MultiAdaptador(ganadas,inflater,actualContext);
-        listaGanada.setAdapter(adaptadorGanada);
-    }
-
-    private void preparaListaEmpatada(View view, LayoutInflater inflater){
-        listaEmpatada = (ListView) view.findViewById(R.id.listaPartidasEmpatadas);
-        adaptadorEmpatada = new MultiAdaptador(empatadas,inflater,actualContext);
-        listaEmpatada.setAdapter(adaptadorEmpatada);
-    }
-
-    private void preparaListaPerdida(View view, LayoutInflater inflater){
-        listaPerdida = (ListView) view.findViewById(R.id.listaPartidasPerdidas);
-        adaptadorPerdida = new MultiAdaptador(perdidas,inflater,actualContext);
-        listaPerdida.setAdapter(adaptadorPerdida);
     }
 
 /*
