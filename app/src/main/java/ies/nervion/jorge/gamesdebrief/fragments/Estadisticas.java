@@ -47,7 +47,10 @@ public class Estadisticas extends Fragment {
     private TextView tipoDato;
     private ListView listaDato;
     private FourColumnAdaptor adaptadorDatos;
-    private Resultados datos = new Resultados();
+    private List<DatosSpiner> datos = new ArrayList<>();
+    private List<DatosSpiner> ganadas = new ArrayList<>();
+    private List<DatosSpiner> empatadas = new ArrayList<>();
+    private List<DatosSpiner> perdidas = new ArrayList<>();
     private Context actualContext;
     private OnFragmentInteractionListener mListener;
 
@@ -101,7 +104,10 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticaJuegos();
-                datos = result;
+                datos = result.getNombre();
+                ganadas =result.getGanadas();
+                empatadas = result.getEmpatadas();
+                perdidas = result.getPerdidas();
                 tipoDato.setText(JUEGO);
                 resetearListas();
                 //Toast tostada = new Toast(actualContext);
@@ -117,7 +123,10 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasGenero();
-                datos = result;
+                datos = result.getNombre();
+                ganadas =result.getGanadas();
+                empatadas = result.getEmpatadas();
+                perdidas = result.getPerdidas();
                 tipoDato.setText(GENERO);
                 resetearListas();
             }
@@ -130,7 +139,10 @@ public class Estadisticas extends Fragment {
             @Override
             public void onClick(View v) {
                 Resultados result = mListener.estadisticasModo();
-                datos = result;
+                datos = result.getNombre();
+                ganadas =result.getGanadas();
+                empatadas = result.getEmpatadas();
+                perdidas = result.getPerdidas();
                 tipoDato.setText(MODO);
                 resetearListas();
             }
@@ -138,14 +150,13 @@ public class Estadisticas extends Fragment {
     }
 
     private void resetearListas() {
-        adaptadorDatos.clearLista();
-        adaptadorDatos.setLista(datos);
+        adaptadorDatos.setListas(datos,ganadas,empatadas,perdidas);
         adaptadorDatos.notifyDataSetChanged();
     }
 
     private void preparaListaDato(View view, LayoutInflater inflater){
         listaDato = (ListView) view.findViewById(R.id.listaDatos);
-        adaptadorDatos = new FourColumnAdaptor(actualContext, datos,inflater);
+        adaptadorDatos = new FourColumnAdaptor(actualContext,datos,empatadas,ganadas,inflater,perdidas);
         listaDato.setAdapter(adaptadorDatos);
     }
 

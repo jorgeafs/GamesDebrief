@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.example.jorge.gamesdebrief.R;
 
+import java.util.List;
+
 /**
  * Created by Jorge on 04/03/2016.
  */
@@ -18,30 +20,25 @@ public class FourColumnAdaptor extends BaseAdapter {
     //CONSTANTES
     private static final int NUMBER_OF_LAYOUT = 1;
 
-    private Resultados lista;
+    private List<DatosSpiner> datos;
+    private List<DatosSpiner> ganadas;
+    private List<DatosSpiner> empatadas;
+    private List<DatosSpiner> perdidas;
     private LayoutInflater myInflater;
     Context context;
 
-    public FourColumnAdaptor(Context context, Resultados lista, LayoutInflater myInflater) {
+    public FourColumnAdaptor(Context context, List<DatosSpiner> datos, List<DatosSpiner> empatadas, List<DatosSpiner> ganadas, LayoutInflater myInflater, List<DatosSpiner> perdidas) {
         this.context = context;
-        this.lista = lista;
+        this.datos = datos;
+        this.empatadas = empatadas;
+        this.ganadas = ganadas;
         this.myInflater = myInflater;
-    }
-
-    public void setLista(Resultados lista) {
-        this.lista = lista;
-    }
-
-    public void clearLista(){
-        lista.getEmpatadas().clear();
-        lista.getGanadas().clear();
-        lista.getPerdidas().clear();
-        lista.getNombre().clear();
+        this.perdidas = perdidas;
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return datos.size();
     }
 
     @Override
@@ -51,7 +48,7 @@ public class FourColumnAdaptor extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -96,12 +93,19 @@ public class FourColumnAdaptor extends BaseAdapter {
         } else {
             holder = (ViewHolder) row.getTag();
         }
-        holder.getDataName().setText(lista.getNombre().get(position).getTexto());
-        holder.getDataPE().setText(lista.getEmpatadas().get(position).getTexto());
-        holder.getDataPG().setText(lista.getGanadas().get(position).getTexto());
-        holder.getDataPP().setText(lista.getPerdidas().get(position).getTexto());
+        holder.getDataName().setText(datos.get(position).getTexto());
+        holder.getDataPE().setText(empatadas.get(position).getTexto());
+        holder.getDataPG().setText(ganadas.get(position).getTexto());
+        holder.getDataPP().setText(perdidas.get(position).getTexto());
 
         return row;
+    }
+
+    public void setListas(List<DatosSpiner> datos, List<DatosSpiner> ganadas, List<DatosSpiner> empatadas, List<DatosSpiner> perdidas) {
+        this.datos = datos;
+        this.ganadas = ganadas;
+        this.empatadas = empatadas;
+        this.perdidas = perdidas;
     }
 
     public class ViewHolder {
