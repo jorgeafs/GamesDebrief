@@ -1,5 +1,6 @@
 package ies.nervion.jorge.gamesdebrief.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ public class Addjuego extends Fragment {
     private MultiAdaptador adaptadorMapa;
     private MultiAdaptador adaptadorListaModo;
     private MultiAdaptador adaptadorListaMapa;
+    private LayoutInflater inflater;
     private List<DatosSpiner> datosGenero= new ArrayList<>();
     private List<DatosSpiner> datosModo = new ArrayList<>();
     private List<DatosSpiner> datosMapa = new ArrayList<>();
@@ -106,6 +108,7 @@ public class Addjuego extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_addjuego, container, false);
         nombreJuego = (EditText) view.findViewById(R.id.nombreJuego);
+        this.inflater =inflater;
         preparaGenero(view,inflater);
         preparaModo(view, inflater);
         preparaMapa(view, inflater);
@@ -247,7 +250,7 @@ public class Addjuego extends Fragment {
         datosGenero.add(new DatosSpiner("Seleccione un genero",0));
         datosGenero.addAll(mListener.getDatos(GENERO));
         datosGenero.add(new DatosSpiner("Añada un genero",-1));
-        adaptadorGenero = new MultiAdaptador(datosGenero, LayoutInflater.from(actualContex),actualContex);
+        adaptadorGenero = new MultiAdaptador(datosGenero, inflater ,actualContex);
         genero.setAdapter(adaptadorGenero);
         adaptadorGenero.notifyDataSetChanged();
     }
@@ -258,7 +261,7 @@ public class Addjuego extends Fragment {
         datosMapa.remove(ultimoMapa);
         datosMapa.add(nuevoMapa);
         datosMapa.add(ultimoMapa);
-        adaptadorMapa = new MultiAdaptador(datosMapa,LayoutInflater.from(actualContex),actualContex);
+        adaptadorMapa = new MultiAdaptador(datosMapa,inflater,actualContex);
         mapa.setAdapter(adaptadorMapa);
         adaptadorMapa.notifyDataSetChanged();
     }
@@ -268,7 +271,7 @@ public class Addjuego extends Fragment {
         datosModo.add(new DatosSpiner(SELECCIONE_MODO,0));
         datosModo.addAll(mListener.getDatos(MODO));
         datosModo.add(new DatosSpiner(AÑADA_UN_MODO,-1));
-        adaptadorModo = new MultiAdaptador(datosModo,LayoutInflater.from(actualContex),actualContex);
+        adaptadorModo = new MultiAdaptador(datosModo,inflater,actualContex);
         modo.setAdapter(adaptadorModo);
         adaptadorModo.notifyDataSetChanged();
     }
@@ -290,6 +293,17 @@ public class Addjuego extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnFragmentInteractionListener){
+            mListener = (OnFragmentInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    +" must implement OnFragmentInteractionListener");
         }
     }
 

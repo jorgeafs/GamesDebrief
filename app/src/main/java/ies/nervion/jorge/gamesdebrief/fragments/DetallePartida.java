@@ -1,5 +1,6 @@
 package ies.nervion.jorge.gamesdebrief.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ public class DetallePartida extends Fragment {
     private OnFragmentInteractionListener mListener;
     private Context actualContext;
     private EditText numeroTotalJugadores;
+    private LayoutInflater inflater;
     private EditText numeroAliados;
     private EditText numeroEnemigos;
     private EditText descripcion;
@@ -105,6 +107,7 @@ public class DetallePartida extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_partida, container, false);
+        this.inflater = inflater;
         asociaEditviews(view);
         preparaResultado(inflater, view);
         preparaMapa(inflater, view);
@@ -245,7 +248,7 @@ public class DetallePartida extends Fragment {
     }
 
     public void actualizaMapa() {
-        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),LayoutInflater.from(actualContext),actualContext);
+        adaptadorMapa = new MultiAdaptador(mListener.getMapas(mParam1),inflater,actualContext);
         mapas.setAdapter(adaptadorMapa);
         adaptadorMapa.notifyDataSetChanged();
     }
@@ -267,6 +270,17 @@ public class DetallePartida extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnFragmentInteractionListener){
+            mListener = (OnFragmentInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    +" must implement OnFragmentInteractionListener");
         }
     }
 

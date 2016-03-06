@@ -1,5 +1,6 @@
 package ies.nervion.jorge.gamesdebrief.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -55,6 +56,7 @@ public class MenuJuego extends Fragment {
     private Context actualContext;
     private MultiAdaptador modosAdapter;
     private MultiAdaptador juegosAdapter;
+    private LayoutInflater inflater;
     private boolean editing;
 
     public boolean isEditing(){return editing;}
@@ -95,6 +97,7 @@ public class MenuJuego extends Fragment {
         // Inflate the layout for this fragment
         View menuJuegos = inflater.inflate(R.layout.fragment_menu_juego, container, false);
         editing = false;
+        this.inflater = inflater;
         //preparamos los widgets
         preparaBoton(menuJuegos);
         preparaSwitch(menuJuegos);
@@ -200,14 +203,14 @@ public class MenuJuego extends Fragment {
     }
 
     public void actualizaJuego(){
-        juegosAdapter = new MultiAdaptador(mListener.getJuegos(),LayoutInflater.from(actualContext),actualContext);
+        juegosAdapter = new MultiAdaptador(mListener.getJuegos(),inflater,actualContext);
         juegos.setAdapter(juegosAdapter);
         juegosAdapter.notifyDataSetChanged();
         editing = false;
     }
 
     public void actualizaModo(){
-        modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()),LayoutInflater.from(actualContext),actualContext);
+        modosAdapter = new MultiAdaptador(mListener.getModos(((DatosSpiner) juegos.getSelectedItem()).getId()),inflater,actualContext);
         modos.setAdapter(modosAdapter);
         modosAdapter.notifyDataSetChanged();
     }
@@ -238,6 +241,17 @@ public class MenuJuego extends Fragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnFragmentInteractionListener){
+            mListener = (OnFragmentInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    +" must implement OnFragmentInteractionListener");
         }
     }
 

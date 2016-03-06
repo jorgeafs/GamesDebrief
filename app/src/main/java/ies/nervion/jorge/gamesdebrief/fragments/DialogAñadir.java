@@ -1,5 +1,6 @@
 package ies.nervion.jorge.gamesdebrief.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -128,6 +129,17 @@ public class DialogAñadir extends DialogFragment {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnDialogInteractionListener){
+            mListener = (OnDialogInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString()
+                    +" must implement OnFragmentInteractionListener");
         }
     }
 
